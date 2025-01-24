@@ -10,11 +10,56 @@
         <title><%= htmlWebpackPlugin.options.title %></title>
     </head>
     <body>
-        <div class="section">
+        <div class="section journal">
             <div class="container">
-                <h1><%= htmlWebpackPlugin.options.title %></h1>
+                <div class="header">
+                    <h1><%= htmlWebpackPlugin.options.title %></h1>
+                    <div class="nav"></div>
+                </div>
 
-                <div id="root"></div>
+                <div class="journal__form-box">
+                    <form action="#" class="journal__form">
+                        <div class="journal__form-row">
+                            <div class="journal__form-input-box">
+                                <input required type="text" class="journal__form-input" id="form-input-date" autocomplete="off" />
+                                <label class="journal__form-input-label">Date</label>
+                            </div>
+                            <div class="journal__form-input-box">
+                                <input type="text" class="journal__form-input" id="form-input-keywords" autocomplete="off" />
+                                <label class="journal__form-input-label">Keywords</label>
+                            </div>
+                        </div>
+                        <div class="journal__form-row">
+                            <div class="journal__form-input-box">
+                                <input type="text" class="journal__form-input" id="form-input-title" autocomplete="off" />
+                                <label class="journal__form-input-label">Title</label>
+                            </div>
+                        </div>
+                        <div class="journal__form-row">
+                            <div class="journal__form-input-box">
+                                <textarea
+                                    required
+                                    name="note-body"
+                                    class="journal__form-input journal__form-textarea"
+                                    id="form-input-content"
+                                ></textarea>
+                                <label class="journal__form-input-label">Note</label>
+                            </div>
+                        </div>
+                        <div class="journal__form-row">
+                            <div class="journal__form-btns">
+                                <button class="journal__form-btn" type="button">Preview</button>
+                                <button class="journal__form-btn" type="submit">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="bottom-block">
+                <div class="date-time">
+                    <div class="time"></div>
+                </div>
             </div>
         </div>
     </body>

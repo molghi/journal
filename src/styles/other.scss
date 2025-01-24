@@ -1,3 +1,36 @@
 @use "./initial";
 
-// NOTE: because I import with 'use' and not 'import' (which is deprecated), I must use this syntax now: @media (max-width: #{initial.$md3}px) { ... }
+@keyframes blink {
+    0%,
+    100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+}
+
+// ================================================================================================
+
+.bottom-block {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+}
+
+.date-time {
+    opacity: 0.5;
+    transition: all 0.3s;
+    font-size: 14px;
+    &:hover {
+        opacity: 1;
+        font-size: 16px;
+        cursor: none;
+    }
+}
+
+.time {
+    span {
+        animation: blink 2s steps(1, start) infinite;
+    }
+}

@@ -1,0 +1,88 @@
+@use "./initial";
+
+// NOTE: because I import with 'use' and not 'import' (which is deprecated), I must use this syntax now: @media (max-width: #{initial.$md3}px) { ... }
+
+.journal {
+    &__form-box {
+        color: var(--white);
+        padding-bottom: 100px;
+    }
+    &__form {
+        display: flex;
+        flex-direction: column;
+        row-gap: 50px;
+        @media (max-width: #{initial.$md3}px) {
+            row-gap: 30px;
+        }
+    }
+    &__form-row {
+        display: flex;
+        column-gap: 50px;
+        align-items: center;
+        &:nth-child(1) {
+            .journal__form-input-box:nth-child(1) {
+                flex: 0 1 25%;
+            }
+        }
+        @media (max-width: #{initial.$md3}px) {
+            flex-direction: column;
+            row-gap: 30px;
+        }
+    }
+    &__form-input-box {
+        width: 100%;
+        position: relative;
+    }
+
+    &__form-input-label {
+        position: absolute;
+        top: 16px;
+        left: 16px;
+        transition: all 0.3s;
+    }
+
+    &__form-input {
+        flex-grow: 1;
+        flex-shrink: 1;
+        width: 100%;
+        padding: 15px;
+        border-width: 2px;
+        &:focus + .journal__form-input-label {
+            font-size: 14px;
+            top: -20px;
+            left: 0;
+            opacity: 0.5;
+        }
+    }
+    &__form-textarea {
+        height: 350px;
+        min-height: 52px;
+    }
+    &__form-btns {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        column-gap: 30px;
+        @media (max-width: #{initial.$md3}px) {
+            margin-left: initial;
+            width: 100%;
+            flex-direction: column;
+            row-gap: 30px;
+        }
+    }
+    &__form-btn {
+        color: var(--accent);
+        @media (max-width: #{initial.$md3}px) {
+            // display: block;
+            width: 100%;
+            padding: 20px 0;
+        }
+    }
+}
+
+.moved-up {
+    font-size: 14px;
+    top: -20px;
+    left: 0;
+    opacity: 0.5;
+}

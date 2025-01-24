@@ -1,10 +1,13 @@
-$accent: #32cd32; /* slightly paler than 'lime' but brighter than 'green' */
+// $accent: #32cd32; /* slightly paler than 'lime' but brighter than 'green' */
+$accent: green; /* slightly paler than 'lime' but brighter than 'green' */
 $bg: #000;
+$white: #fff;
 $fontsize: 16px;
 
 :root {
     --accent: #{$accent};
     --bg: #{$bg};
+    --white: #{$white};
     --fontsize: #{$fontsize};
 }
 
@@ -39,7 +42,7 @@ textarea {
     outline: none;
     padding: 10px;
     font-size: inherit;
-    transition: box-shadow 0.3s;
+    transition: box-shadow 0.2s;
 }
 
 button {
@@ -48,7 +51,7 @@ button {
 
 input:focus,
 textarea:focus {
-    box-shadow: 0 0 10px $accent;
+    box-shadow: 0 0 20px $accent;
 }
 
 button:hover {
@@ -59,6 +62,7 @@ button:hover {
 
 button:active {
     box-shadow: 0 0 1px $accent;
+    opacity: 0.7;
 }
 
 textarea {
@@ -69,7 +73,8 @@ button {
     cursor: pointer;
 }
 
-input::placeholder {
+input::placeholder,
+textarea::placeholder {
     color: inherit;
     font-family: inherit;
     opacity: 1;

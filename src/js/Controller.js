@@ -15,6 +15,12 @@ const Visual = new View();
 
 // runs on app start
 function init() {
+    const [year, month, date, hours, minutes] = Logic.getCurrentTime(); // getting now time
+    Visual.renderTimeElement(year, month, date, hours, minutes); // rendering time element (bottom left)
+    Visual.renderFormDateEl(year, month, date); // rendering date input in form
+
+    Logic.tickTime(Visual.renderTimeElement); // updating time every 60 seconds
+
     runEventListeners();
 }
 init();
@@ -22,7 +28,9 @@ init();
 // ================================================================================================
 
 // running event listeners
-function runEventListeners() {}
+function runEventListeners() {
+    Visual.listenToBlur();
+}
 
 // ================================================================================================
 
