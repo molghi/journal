@@ -20,6 +20,7 @@ function init() {
     Visual.renderFormDateEl(year, month, date); // rendering date input in form
 
     Logic.tickTime(Visual.renderTimeElement); // updating time every 60 seconds
+    Visual.setAccentColor(Logic.getAccentColor()); // changing the accent color if it was saved to LS
 
     runEventListeners();
 }
@@ -35,6 +36,7 @@ function runEventListeners() {
     Visual.handleHeaderNav(navHandler);
     Visual.handleAllNotesActions(allNotesHandler);
     Visual.listenToBlurAllNotes();
+    Visual.handleActionsMenu(actionsHandler);
 }
 
 // ================================================================================================
@@ -144,6 +146,17 @@ function replaceTextEditInput(e) {
     Logic.editNote("text", blurredInputNoteId, newInputValue); // updating in state and LS
     const thisMiniatureEl = document.querySelector(`.all-entries__browser div[data-id="${blurredInputNoteId}"]`); // updating the miniature
     thisMiniatureEl.setAttribute("title", `Note: ${newInputValue.replaceAll("<br>", " ").slice(0, 50)}...`);
+}
+
+// ================================================================================================
+
+function actionsHandler(typeOfAction) {
+    if (typeOfAction === "change color") {
+        const newColor = Visual.promptAccentChange();
+        const checkedColor = Logic.checkNewColor(newColor);
+        Visual.setAccentColor(checkedColor);
+        Logic.setAccentColor(checkedColor);
+    }
 }
 
 // ================================================================================================

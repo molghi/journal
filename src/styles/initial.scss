@@ -36,13 +36,13 @@ select,
 textarea {
     cursor: pointer;
     background-color: transparent;
-    color: inherit;
+    color: var(--accent);
     font-family: inherit;
-    border: 1px solid $accent;
+    border: 1px solid var(--accent);
     outline: none;
     padding: 10px;
     font-size: inherit;
-    transition: box-shadow 0.2s;
+    // transition: box-shadow 0.2s;
 }
 
 button {
@@ -51,17 +51,17 @@ button {
 
 input:focus,
 textarea:focus {
-    box-shadow: 0 0 20px $accent;
+    box-shadow: 0 0 20px var(--accent);
 }
 
 button:hover {
-    background-color: $accent;
+    background-color: var(--accent);
     color: $bg;
-    box-shadow: 0 0 10px $accent;
+    box-shadow: 0 0 10px var(--accent);
 }
 
 button:active {
-    box-shadow: 0 0 1px $accent;
+    box-shadow: 0 0 1px var(--accent);
     opacity: 0.7;
 }
 

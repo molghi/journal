@@ -80,4 +80,17 @@ function listenToBlurAllNotes(handler) {
 
 // ================================================================================================
 
-export { listenToBlur, handleFormSubmit, handleHeaderNav, handleAllNotesActions, listenToBlurAllNotes };
+function handleActionsMenu(handler) {
+    Visual.actionsMenu.addEventListener("click", (e) => {
+        if (!e.target.classList.contains("action-action")) return;
+        const actionType = e.target.textContent.trim().toLowerCase();
+
+        if (actionType === "change color") {
+            handler(actionType);
+        }
+    });
+}
+
+// ================================================================================================
+
+export { listenToBlur, handleFormSubmit, handleHeaderNav, handleAllNotesActions, listenToBlurAllNotes, handleActionsMenu };

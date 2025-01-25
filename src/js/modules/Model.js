@@ -6,11 +6,13 @@ class Model {
     #state = {
         formMode: "adding",
         notes: [],
+        accentColor: "green",
     };
 
     constructor() {
         this.timer = "";
         this.getNotes();
+        this.fetchAccentColor(); // fetching from LS and updating only the state
     }
 
     // ================================================================================================
@@ -22,6 +24,8 @@ class Model {
     getStateNotes = () => this.#state.notes;
 
     getMode = () => this.#state.formMode;
+
+    getAccentColor = () => this.#state.accentColor;
 
     // ================================================================================================
 
@@ -123,6 +127,41 @@ class Model {
         const index = this.#state.notes.findIndex((note) => note.id === +noteId);
         if (index < 0) return;
         return this.#state.notes[index].note;
+    }
+
+    // ================================================================================================
+
+    checkNewColor(newColor) {
+        // mimicking DOM addition to get the computed color
+        const span = document.createElement("span");
+        document.body.appendChild(span);
+        span.style.color = newColor;
+        let color = window.getComputedStyle(span).color;
+        document.body.removeChild(span);
+
+        const rgbValues = color
+            .slice(4, -1)
+            .split(",")
+            .map((x) => +x.trim()); // just the rgb values (r,g,b)
+
+        if (rgbValues[0] < 40 && rgbValues[1] < 40 && rgbValues[2] < 40) return `rgb(0, 128, 0)`; // return green if it is too dark
+
+        return color;
+    }
+
+    // ================================================================================================
+
+    setAccentColor(color) {
+        this.#state.accentColor = color;
+        LS.save("myJournalAccentColor", this.#state.accentColor, "prim"); // push to LS a primitive type
+    }
+
+    // ================================================================================================
+
+    fetchAccentColor() {
+        const fetched = LS.get("myJournalAccentColor", "prim");
+        if (!fetched) return;
+        this.#state.accentColor = fetched;
     }
 
     // ================================================================================================

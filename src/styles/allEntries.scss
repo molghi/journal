@@ -12,6 +12,7 @@
         padding: 15px 10px;
         align-self: start;
         min-width: 200px;
+        color: var(--white);
     }
 
     &__notes {
@@ -62,11 +63,13 @@
         width: 100%;
         margin-bottom: 15px;
         cursor: pointer;
+        color: var(--white);
     }
 
     &__note-text {
         margin-bottom: 15px;
         width: 100%;
+        color: var(--white);
         cursor: pointer;
     }
 
@@ -74,6 +77,7 @@
         display: flex;
         align-items: center;
         column-gap: 10px;
+        color: var(--accent);
         cursor: pointer;
         button {
             padding: 0 5px;
@@ -83,6 +87,7 @@
 
     &__note-date {
         cursor: default;
+        color: var(--accent);
     }
 
     &__note-button {
@@ -92,27 +97,36 @@
         right: 0px;
         width: 20px;
         height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         background-color: var(--accent);
         opacity: 0;
-        span {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            // background-color: white;
-            background-color: var(--bg);
-            width: 18px;
-            height: 2px;
-            transform: translate(-49%, -67%) rotate(-43deg);
-            &:after {
-                content: "";
-                position: absolute;
-                background-color: white;
-                background-color: var(--bg);
-                width: 18px;
-                height: 2px;
-                transform: rotate(-91deg);
+        svg {
+            width: 15px;
+            path {
+                fill: var(--bg);
             }
         }
+        // span {
+        //     position: absolute;
+        //     top: 50%;
+        //     left: 50%;
+        //     // background-color: white;
+        //     background-color: var(--bg);
+        //     width: 18px;
+        //     height: 2px;
+        //     transform: translate(-49%, -67%) rotate(-43deg);
+        //     &:after {
+        //         content: "";
+        //         position: absolute;
+        //         background-color: white;
+        //         background-color: var(--bg);
+        //         width: 18px;
+        //         height: 2px;
+        //         transform: rotate(-91deg);
+        //     }
+        // }
         &:hover {
             opacity: 1 !important;
         }

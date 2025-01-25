@@ -13,6 +13,7 @@ import {
     handleHeaderNav,
     handleAllNotesActions,
     listenToBlurAllNotes,
+    handleActionsMenu,
 } from "./view-dependencies/eventHandlers.js";
 import listenKeyPresses from "./view-dependencies/keyCommands.js";
 
@@ -30,6 +31,7 @@ class View {
         this.allEntriesSection = document.querySelector(".all-entries");
         this.allEntriesBrowser = document.querySelector(".all-entries__browser");
         this.allEntriesBox = document.querySelector(".all-entries__notes");
+        this.actionsMenu = document.querySelector(".actions-menu");
     }
 
     // ================================================================================================
@@ -191,6 +193,25 @@ class View {
 
     listenToBlurAllNotes(handler) {
         listenToBlurAllNotes(handler);
+    }
+
+    // ================================================================================================
+
+    handleActionsMenu(handler) {
+        handleActionsMenu(handler);
+    }
+
+    // ================================================================================================
+
+    promptAccentChange() {
+        const newColor = prompt("Type your new UI colour:");
+        return newColor;
+    }
+
+    // ================================================================================================
+
+    setAccentColor(color) {
+        document.documentElement.style.setProperty("--accent", color); // changing the accent colour
     }
 
     // ================================================================================================

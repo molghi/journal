@@ -1,0 +1,57 @@
+@use "./initial";
+
+.actions {
+    position: fixed;
+    bottom: 40px;
+    color: var(--accent);
+    &:hover .actions-menu {
+        opacity: 1;
+        visibility: visible;
+    }
+}
+
+.actions-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background-color: var(--accent);
+    cursor: pointer;
+    opacity: 0.5;
+    svg {
+        width: 18px;
+        path {
+            fill: var(--bg);
+        }
+    }
+    &:hover {
+        opacity: 1;
+        box-shadow: 0 0 1px var(--accent);
+    }
+}
+
+.actions-menu {
+    position: absolute;
+    bottom: 99%;
+    left: 0;
+    opacity: 0;
+    visibility: hidden;
+    padding-bottom: 10px;
+    transition: all 0.3s;
+}
+
+.action-action {
+    cursor: pointer;
+    padding: 3px 5px;
+    font-size: 14px;
+    white-space: nowrap;
+    &:hover {
+        background-color: var(--accent);
+        color: var(--bg);
+    }
+    &:active {
+        opacity: 0.5;
+    }
+}

@@ -1,9 +1,10 @@
 import { Visual } from "../../Controller.js";
+import { crossIcon } from "./icons.js";
 
 // ================================================================================================
 
 function renderTimeElement(year, month, date, hours, minutes, seconds) {
-    Visual.timeEl.innerHTML = `${hours}<span>:</span>${minutes}`;
+    Visual.timeEl.innerHTML = `${hours % 12}<span>:</span>${minutes}`;
     Visual.timeEl.setAttribute("title", `${date}/${month}/${year.toString().slice(2)}  ̶ ${hours}:${minutes}`);
 }
 
@@ -65,7 +66,7 @@ function renderNote(noteObj) {
 <div class="all-entries__note-row">
 <div class="all-entries__note-keywords">Keywords: ${keywordsEl}</div>
 <div class="all-entries__note-date">Date: ${noteObj.dateInput}</div>
-</div><div class="all-entries__note-button"><span></span></div>`;
+</div><div class="all-entries__note-button">${crossIcon}</div>`;
 
     Visual.allEntriesBox.appendChild(div);
 }
