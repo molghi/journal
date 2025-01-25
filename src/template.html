@@ -14,45 +14,77 @@
             <div class="container">
                 <div class="header">
                     <h1><%= htmlWebpackPlugin.options.title %></h1>
-                    <div class="nav"></div>
+                    <div class="header__nav">
+                        <button class="header__btn header__btn--add active">Add New</button>
+                        <button class="header__btn header__btn--view">View All</button>
+                    </div>
                 </div>
 
                 <div class="journal__form-box">
                     <form action="#" class="journal__form">
                         <div class="journal__form-row">
                             <div class="journal__form-input-box">
-                                <input required type="text" class="journal__form-input" id="form-input-date" autocomplete="off" />
+                                <input
+                                    tabindex="1"
+                                    type="text"
+                                    class="journal__form-input"
+                                    id="form-input-date"
+                                    autocomplete="off"
+                                />
                                 <label class="journal__form-input-label">Date</label>
                             </div>
                             <div class="journal__form-input-box">
-                                <input type="text" class="journal__form-input" id="form-input-keywords" autocomplete="off" />
+                                <input
+                                    tabindex="2"
+                                    type="text"
+                                    class="journal__form-input"
+                                    id="form-input-keywords"
+                                    autocomplete="off"
+                                    title="If more than one, separate by commas"
+                                />
                                 <label class="journal__form-input-label">Keywords</label>
                             </div>
                         </div>
                         <div class="journal__form-row">
                             <div class="journal__form-input-box">
-                                <input type="text" class="journal__form-input" id="form-input-title" autocomplete="off" />
+                                <input
+                                    tabindex="3"
+                                    type="text"
+                                    class="journal__form-input"
+                                    id="form-input-title"
+                                    autocomplete="off"
+                                />
                                 <label class="journal__form-input-label">Title</label>
                             </div>
                         </div>
                         <div class="journal__form-row">
                             <div class="journal__form-input-box">
                                 <textarea
-                                    required
+                                    tabindex="4"
                                     name="note-body"
                                     class="journal__form-input journal__form-textarea"
                                     id="form-input-content"
+                                    title="Cannot be empty"
                                 ></textarea>
                                 <label class="journal__form-input-label">Note</label>
                             </div>
                         </div>
                         <div class="journal__form-row">
                             <div class="journal__form-btns">
-                                <button class="journal__form-btn" type="button">Preview</button>
-                                <button class="journal__form-btn" type="submit">Submit</button>
+                                <!-- <button class="journal__form-btn" type="button">Preview</button> -->
+                                <button class="journal__form-btn" type="submit" title="Or press Command/Control + Enter">
+                                    Submit
+                                </button>
                             </div>
                         </div>
                     </form>
+                </div>
+
+                <div class="all-entries hidden">
+                    <div class="all-entries__box">
+                        <div class="all-entries__browser"></div>
+                        <div class="all-entries__notes"></div>
+                    </div>
                 </div>
             </div>
 

@@ -1,0 +1,123 @@
+@use "./initial";
+
+.all-entries {
+    &__box {
+        display: flex;
+        column-gap: 30px;
+    }
+
+    &__browser {
+        border: 1px solid var(--accent);
+        flex: 0 1 25%;
+        padding: 15px 10px;
+        align-self: start;
+        min-width: 200px;
+    }
+
+    &__notes {
+        flex: 1 1 auto;
+        display: flex;
+        flex-direction: column;
+        row-gap: 30px;
+        max-height: 80vh;
+        padding-right: 7px;
+        overflow: hidden;
+        overflow-y: scroll;
+    }
+
+    &__miniature {
+        padding: 10px;
+        font-size: 14px;
+        cursor: pointer;
+        white-space: nowrap;
+        &:hover {
+            background-color: var(--accent);
+            color: var(--bg);
+        }
+        &:active {
+            opacity: 0.7;
+        }
+    }
+
+    &__note {
+        border: 1px solid var(--accent);
+        padding: 20px;
+        position: relative;
+        &:hover {
+            .all-entries__note-button {
+                opacity: 0.5;
+            }
+        }
+    }
+
+    &__note-row {
+        display: flex;
+        align-items: center;
+        // justify-content: space-between;
+        column-gap: 50px;
+    }
+
+    &__note-title {
+        font-size: 24px;
+        width: 100%;
+        margin-bottom: 15px;
+        cursor: pointer;
+    }
+
+    &__note-text {
+        margin-bottom: 15px;
+        width: 100%;
+        cursor: pointer;
+    }
+
+    &__note-keywords {
+        display: flex;
+        align-items: center;
+        column-gap: 10px;
+        cursor: pointer;
+        button {
+            padding: 0 5px;
+            border: none;
+        }
+    }
+
+    &__note-date {
+        cursor: default;
+    }
+
+    &__note-button {
+        cursor: pointer;
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        width: 20px;
+        height: 20px;
+        background-color: var(--accent);
+        opacity: 0;
+        span {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            // background-color: white;
+            background-color: var(--bg);
+            width: 18px;
+            height: 2px;
+            transform: translate(-49%, -67%) rotate(-43deg);
+            &:after {
+                content: "";
+                position: absolute;
+                background-color: white;
+                background-color: var(--bg);
+                width: 18px;
+                height: 2px;
+                transform: rotate(-91deg);
+            }
+        }
+        &:hover {
+            opacity: 1 !important;
+        }
+        &:active {
+            opacity: 0.5 !important;
+        }
+    }
+}

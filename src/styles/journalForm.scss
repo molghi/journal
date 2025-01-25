@@ -5,7 +5,8 @@
 .journal {
     &__form-box {
         color: var(--white);
-        padding-bottom: 100px;
+        // padding-bottom: 100px;
+        padding-bottom: 20px;
     }
     &__form {
         display: flex;
@@ -55,7 +56,7 @@
         }
     }
     &__form-textarea {
-        height: 350px;
+        height: 300px;
         min-height: 52px;
     }
     &__form-btns {

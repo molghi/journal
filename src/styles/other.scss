@@ -13,7 +13,7 @@
 // ================================================================================================
 
 .bottom-block {
-    position: absolute;
+    position: fixed;
     bottom: 10px;
     left: 10px;
 }
@@ -33,4 +33,79 @@
     span {
         animation: blink 2s steps(1, start) infinite;
     }
+}
+
+// ================================================================================================
+
+.message {
+    border: 2px solid var(--accent);
+    color: var(--accent);
+    padding: 20px;
+    background-color: var(--bg);
+}
+.error {
+    color: red;
+    border-color: red;
+}
+
+.success {
+    color: limegreen;
+    border-color: limegreen;
+}
+
+// ================================================================================================
+
+@keyframes pulse {
+    0% {
+        opacity: 0.2;
+        transform: scale(0.95);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes reveal {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+@keyframes hide {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+// ================================================================================================
+
+.hidden {
+    display: none;
+}
+
+// ================================================================================================
+
+.input-edit {
+    padding: 0;
+    box-shadow: none;
+    border: none;
+    &:active,
+    &:focus {
+        box-shadow: none;
+    }
+}
+
+.textarea-edit {
+    width: 100%;
+    resize: vertical;
 }
