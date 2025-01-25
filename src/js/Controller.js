@@ -153,9 +153,21 @@ function replaceTextEditInput(e) {
 function actionsHandler(typeOfAction) {
     if (typeOfAction === "change color") {
         const newColor = Visual.promptAccentChange();
+        if (!newColor) return;
+        if (newColor && newColor.trim().length < 3) return;
         const checkedColor = Logic.checkNewColor(newColor);
-        Visual.setAccentColor(checkedColor);
-        Logic.setAccentColor(checkedColor);
+        Visual.setAccentColor(checkedColor); // changing visually
+        Logic.setAccentColor(checkedColor); // changing in state and LS
+    } else if (typeOfAction === "export notes") {
+        let answer = prompt(`Choose the format: TXT or JSON?
+    JSON: bad for reading, good for importing
+    TXT: good for reading, bad for importing`); // prompting
+        if (!answer) return;
+        answer = answer.toLowerCase().trim();
+        if (answer !== "txt" && answer !== "json") return;
+        answer === "json" ? Logic.exportNotesJson() : Logic.exportNotesTxt(); // exporting as JSON or TXT
+    } else if (typeOfAction === "import notes") {
+        console.log(`importing...`);
     }
 }
 

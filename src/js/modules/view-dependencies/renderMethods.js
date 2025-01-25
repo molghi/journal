@@ -5,7 +5,7 @@ import { crossIcon } from "./icons.js";
 
 function renderTimeElement(year, month, date, hours, minutes, seconds) {
     Visual.timeEl.innerHTML = `${hours % 12}<span>:</span>${minutes}`;
-    Visual.timeEl.setAttribute("title", `${date}/${month}/${year.toString().slice(2)}  ̶ ${hours}:${minutes}`);
+    Visual.timeEl.setAttribute("title", `Now: ${date}/${month}/${year.toString().slice(2)}  ̶ ${hours}:${minutes}`);
 }
 
 // ================================================================================================

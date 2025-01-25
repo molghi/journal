@@ -76,6 +76,7 @@
         }
     }
     &__form-btn {
+        padding: 10px 15px;
         border-color: var(--accent);
         color: var(--accent);
         @media (max-width: #{initial.$md3}px) {

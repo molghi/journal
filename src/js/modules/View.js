@@ -204,7 +204,8 @@ class View {
     // ================================================================================================
 
     promptAccentChange() {
-        const newColor = prompt("Type your new UI colour:");
+        const newColor = prompt("Type your new interface color:");
+        if (newColor && newColor.length > 0) newColor.trim();
         return newColor;
     }
 

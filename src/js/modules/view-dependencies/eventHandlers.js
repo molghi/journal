@@ -85,9 +85,9 @@ function handleActionsMenu(handler) {
         if (!e.target.classList.contains("action-action")) return;
         const actionType = e.target.textContent.trim().toLowerCase();
 
-        if (actionType === "change color") {
-            handler(actionType);
-        }
+        // if (actionType === "change color") {
+        handler(actionType);
+        // }
     });
 }
 

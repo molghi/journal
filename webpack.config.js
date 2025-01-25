@@ -59,4 +59,7 @@ module.exports = {
         }),
         // new BundleAnalyzerPlugin()
     ],
+    stats: {
+        warningsFilter: [/sass\.dart\.js/],
+    },
 };
