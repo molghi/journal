@@ -121,7 +121,12 @@ class Model {
         if (editWhat === "text") {
             this.#state.notes[index].note = newValue;
         }
+        if (editWhat === "keywords") {
+            const newKeywords = !newValue.includes(",") ? newValue : newValue.split(",").map((x) => x.trim());
+            this.#state.notes[index].keywords = newKeywords;
+        }
         LS.save("myJournal", this.#state.notes, "reference"); // push to LS a reference type
+        if (editWhat === "keywords") return this.#state.notes[index].keywords; // returning to re-render
     }
 
     // ================================================================================================
@@ -258,6 +263,13 @@ class Model {
             default:
                 return null;
         }
+    }
+
+    // ================================================================================================
+
+    getKeywords(noteId) {
+        const index = this.#state.notes.findIndex((note) => note.id === +noteId);
+        return this.#state.notes[index].keywords;
     }
 
     // ================================================================================================

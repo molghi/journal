@@ -64,7 +64,7 @@ function renderNote(noteObj) {
 <div class="all-entries__note-text">${noteObj.note}</div>
 </div>
 <div class="all-entries__note-row">
-<div class="all-entries__note-keywords">Keywords: ${keywordsEl}</div>
+<div class="all-entries__note-keywords"><span title="Click to edit keywords">Keywords: </span> ${keywordsEl}</div>
 <div class="all-entries__note-date">Date: ${noteObj.dateInput}</div>
 </div><div class="all-entries__note-button">${crossIcon}</div>`;
 

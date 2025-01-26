@@ -14,6 +14,7 @@ import {
     handleAllNotesActions,
     listenToBlurAllNotes,
     handleActionsMenu,
+    listenToAutoScroll,
 } from "./view-dependencies/eventHandlers.js";
 import listenKeyPresses from "./view-dependencies/keyCommands.js";
 
@@ -32,6 +33,12 @@ class View {
         this.allEntriesBrowser = document.querySelector(".all-entries__browser");
         this.allEntriesBox = document.querySelector(".all-entries__notes");
         this.actionsMenu = document.querySelector(".actions-menu");
+
+        this.scrollTimeout = "";
+        this.clickedElId = 0;
+        this.lastScrollTop = 0;
+
+        this.scrollBoxDisplacement = 0;
     }
 
     // ================================================================================================
@@ -213,6 +220,12 @@ class View {
 
     setAccentColor(color) {
         document.documentElement.style.setProperty("--accent", color); // changing the accent colour
+    }
+
+    // ================================================================================================
+
+    listenToAutoScroll() {
+        listenToAutoScroll();
     }
 
     // ================================================================================================

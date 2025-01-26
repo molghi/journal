@@ -37,6 +37,7 @@ function runEventListeners() {
     Visual.handleAllNotesActions(allNotesHandler);
     Visual.listenToBlurAllNotes();
     Visual.handleActionsMenu(actionsHandler);
+    Visual.listenToAutoScroll();
 }
 
 // ================================================================================================
@@ -116,6 +117,33 @@ function allNotesHandler(typeOfAction, clickedElId, currentValue) {
         inputEdit.style.height = textElheight; // making it the same height as before
         inputEdit.focus(); // focusing it
         inputEdit.addEventListener("blur", replaceTextEditInput); // listening to the blur event when we need to update the values
+    } else if (typeOfAction === "edit keywords") {
+        const keywords = Logic.getKeywords(clickedElId);
+        const keywordsString =
+            keywords && Array.isArray(keywords) ? keywords.join(", ") : keywords && !Array.isArray(keywords) ? keywords : ""; // making a string of stored keywords
+        const answer = prompt("Edit your keywords: (if more than one, separate by commas)", keywordsString); // prompting
+        if (answer === null) return; // user clicked Cancel in the prompt window
+        const currentNoteEl = document.querySelector(`.all-entries__notes [data-id="${clickedElId}"]`);
+        const currentKeywordsEl = currentNoteEl.querySelector(".all-entries__note-keywords");
+        const newKeywords = Logic.editNote("keywords", clickedElId, answer); // updating in state and LS
+        // updating in the UI:
+        if (Array.isArray(newKeywords)) {
+            currentKeywordsEl.innerHTML = `<span title="Click to edit keywords">Keywords: </span>${newKeywords
+                .map((key) => `<button>${key}</button>`)
+                .join("")}`;
+        } else if (newKeywords) {
+            currentKeywordsEl.innerHTML = `<span title="Click to edit keywords">Keywords: </span><button>${newKeywords}</button>`;
+        } else {
+            currentKeywordsEl.innerHTML = `<span title="Click to edit keywords">Keywords: </span>`;
+        }
+    } else if (typeOfAction === `scroll to note`) {
+        Visual.clickedElId = clickedElId;
+        const noteEl = document.querySelector(`.all-entries__notes [data-id="${clickedElId}"]`);
+        if (noteEl) {
+            noteEl.scrollIntoView({
+                behavior: "smooth", // Smooth scroll
+            });
+        }
     }
 }
 
