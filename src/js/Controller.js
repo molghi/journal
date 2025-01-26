@@ -20,7 +20,7 @@ function init() {
     Visual.renderFormDateEl(year, month, date); // rendering date input in form
 
     Logic.tickTime(Visual.renderTimeElement); // updating time every 60 seconds
-    Visual.setAccentColor(Logic.getAccentColor()); // changing the accent color if it was saved to LS
+    Visual.setAccentColor(Logic.getAccentColor()); // changing the accent color if it was saved to L
 
     runEventListeners();
 }
@@ -38,6 +38,8 @@ function runEventListeners() {
     Visual.listenToBlurAllNotes();
     Visual.handleActionsMenu(actionsHandler);
     Visual.listenToAutoScroll();
+    Visual.handleSearchForm(searchNotes);
+    Visual.handleSeachInput();
 }
 
 // ================================================================================================
@@ -71,17 +73,27 @@ function navHandler(clickedEl) {
         // show form, hide all
         clickedEl.nextElementSibling.classList.remove("active");
         Visual.toggleFormNotes("form");
+        Visual.removeMessages();
     } else {
-        // hide form, render all
+        // show all, hide form
         clickedEl.previousElementSibling.classList.remove("active");
         Visual.toggleFormNotes("all notes");
         Visual.clearAllNotes(); // clearing all before re-rendering them
-        const allNoteTitles = Logic.getStateNotes().map((noteObj) => noteObj.title);
-        const allNoteIds = Logic.getStateNotes().map((noteObj) => noteObj.id);
-        const allContentIds = Logic.getStateNotes().map((noteObj) => noteObj.note.slice(0, 50));
-        Visual.renderEntriesBrowser(allNoteTitles, allNoteIds, allContentIds); // rendering all miniatures
         const allNotesCopy = JSON.parse(JSON.stringify(Logic.getStateNotes())).reverse(); // reversing the order of notes: all the new ones will be at the top
+        if (allNotesCopy.length === 0) {
+            Visual.showMessage("notification", "Nothing here yet...");
+            Visual.toggleAllEntriesElements("hide"); // toggling the visibility of .search and .all-entries__box
+            return;
+        }
+        Visual.removeMessages();
+        Visual.toggleAllEntriesElements("show");
+        const allNoteTitles = allNotesCopy.map((noteObj) => noteObj.title);
+        const allNoteIds = allNotesCopy.map((noteObj) => noteObj.id);
+        const allContentIds = allNotesCopy.map((noteObj) => noteObj.note.slice(0, 50));
+        Visual.renderEntriesBrowser(allNoteTitles, allNoteIds, allContentIds); // rendering all miniatures
         allNotesCopy.forEach((noteObj) => Visual.renderNote(noteObj));
+        const notesNum = Logic.getStateNotes().length;
+        Visual.updateSearchPlaceholder(notesNum);
     }
 }
 
@@ -96,6 +108,13 @@ function allNotesHandler(typeOfAction, clickedElId, currentValue) {
         const noteElToRemove = document.querySelector(`.all-entries__notes div[data-id="${clickedElId}"]`);
         miniatureElToRemove.remove();
         noteElToRemove.remove();
+        const notesNum = Logic.getStateNotes().length;
+        if (notesNum === 0) {
+            Visual.showMessage("notification", "Nothing here yet...");
+            Visual.toggleAllEntriesElements("hide"); // toggling the visibility of .search and .all-entries__box
+            return;
+        }
+        Visual.updateSearchPlaceholder(notesNum);
     } else if (typeOfAction === "edit title") {
         const titleEl = document.querySelector(`.all-entries__notes div[data-id="${clickedElId}"] .all-entries__note-title`); // finding that title el, not miniature
         const inputEdit = document.createElement("input"); // creating new input
@@ -197,6 +216,13 @@ function actionsHandler(typeOfAction) {
     } else if (typeOfAction === "import notes") {
         console.log(`importing...`);
     }
+}
+
+// ================================================================================================
+
+function searchNotes(inputValue) {
+    const filteredNotesIds = Logic.filterNotes(inputValue); // finding those notes that satisfy the input criterion: those that contain it
+    Visual.filterNotes(filteredNotesIds); // hiding all that don't contain the inputValue
 }
 
 // ================================================================================================

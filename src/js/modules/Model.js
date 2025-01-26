@@ -273,6 +273,28 @@ class Model {
     }
 
     // ================================================================================================
+
+    filterNotes(inputValue) {
+        const searchByContent = this.#state.notes.filter((noteObj) =>
+            noteObj.note.toLowerCase().includes(inputValue.toLowerCase())
+        );
+        const searchByDate = this.#state.notes.filter((noteObj) =>
+            noteObj.dateInput.toLowerCase().includes(inputValue.toLowerCase())
+        );
+        const searchByKeywords = this.#state.notes.filter((noteObj) => {
+            const keywordsIsArray = Array.isArray(noteObj.keywords);
+            if (keywordsIsArray) return noteObj.keywords.map((key) => key.toLowerCase()).includes(inputValue.toLowerCase());
+            else noteObj.keywords.toLowerCase().includes(inputValue.toLowerCase());
+        });
+        const searchByTitle = this.#state.notes.filter((noteObj) =>
+            noteObj.title.toLowerCase().includes(inputValue.toLowerCase())
+        );
+        const allFindings = [...searchByContent, ...searchByDate, ...searchByKeywords, ...searchByTitle];
+        const allFindingsIds = [...new Set(allFindings.map((noteObj) => noteObj.id))];
+        return allFindingsIds;
+    }
+
+    // ================================================================================================
 }
 
 export default Model;

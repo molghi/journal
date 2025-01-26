@@ -1,6 +1,7 @@
 @use "./initial"; // styles reset and general things for the proj
 @use "./journalForm";
-@use "./other";
 @use "./header";
 @use "./allEntries";
 @use "./actions";
+@use "./search";
+@use "./other";

@@ -74,7 +74,11 @@ function handleAllNotesActions(handler) {
             const clickedNoteElTop = noteEl.getBoundingClientRect().top;
             const clickedNoteElBottom = noteEl.getBoundingClientRect().bottom;
 
-            if (noteEl.getBoundingClientRect().top === 120) {
+            const headerHeight = window.getComputedStyle(document.querySelector(".header")).height;
+            const headerMarginBottom = window.getComputedStyle(document.querySelector(".header")).marginBottom;
+            const offset = parseInt(headerHeight) + parseInt(headerMarginBottom);
+
+            if (noteEl.getBoundingClientRect().top === offset) {
                 // if true then the element is at the top of the scrollable container, no scrolling happens
                 addFindingAnimation(noteEl);
             } else if (
@@ -134,10 +138,32 @@ function listenToAutoScroll() {
 
 // dependency of 'listenToAutoScroll'
 function addFindingAnimation(noteEl) {
+    if (!noteEl) return;
     noteEl.style.animation = "shine 1s linear 0s 2"; // animation: name duration timing-function delay iteration-count direction fill-mode;
     setTimeout(() => {
         noteEl.style.animation = "none";
     }, 2000);
+}
+
+// ================================================================================================
+
+function handleSearchForm(handler) {
+    Visual.searchForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const inputValue = Visual.searchInput.value;
+        handler(inputValue);
+    });
+}
+
+// ================================================================================================
+
+function handleSeachInput() {
+    Visual.searchInput.addEventListener("input", function (e) {
+        if (this.value.length === 0) {
+            // unhide all notes
+            Visual.showAllMinisNotes();
+        }
+    });
 }
 
 // ================================================================================================
@@ -150,4 +176,6 @@ export {
     listenToBlurAllNotes,
     handleActionsMenu,
     listenToAutoScroll,
+    handleSearchForm,
+    handleSeachInput,
 };

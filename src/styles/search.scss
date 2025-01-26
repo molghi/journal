@@ -1,0 +1,23 @@
+@use "./initial";
+
+.search {
+    margin-bottom: 30px;
+
+    &__form {
+    }
+
+    &__input {
+        width: 100%;
+        transition: box-shadow 0.3s;
+        color: var(--white);
+        padding: 10px 15px;
+        &:focus {
+            &::placeholder {
+                opacity: 0.4;
+            }
+        }
+        &::placeholder {
+            color: var(--white);
+        }
+    }
+}

@@ -15,6 +15,8 @@ import {
     listenToBlurAllNotes,
     handleActionsMenu,
     listenToAutoScroll,
+    handleSearchForm,
+    handleSeachInput,
 } from "./view-dependencies/eventHandlers.js";
 import listenKeyPresses from "./view-dependencies/keyCommands.js";
 
@@ -33,6 +35,11 @@ class View {
         this.allEntriesBrowser = document.querySelector(".all-entries__browser");
         this.allEntriesBox = document.querySelector(".all-entries__notes");
         this.actionsMenu = document.querySelector(".actions-menu");
+
+        this.searchForm = document.querySelector(".search__form");
+        this.searchInput = document.querySelector(".search__input");
+        this.searchSection = document.querySelector(".search");
+        this.allEntriesWrapper = document.querySelector(".all-entries__box");
 
         this.scrollTimeout = "";
         this.clickedElId = 0;
@@ -226,6 +233,64 @@ class View {
 
     listenToAutoScroll() {
         listenToAutoScroll();
+    }
+
+    // ================================================================================================
+
+    handleSearchForm(handler) {
+        handleSearchForm(handler);
+    }
+
+    // ================================================================================================
+
+    updateSearchPlaceholder(notesNum) {
+        if (notesNum < 2) {
+            this.searchInput.classList.add("hidden");
+            // this.searchInput.setAttribute("placeholder", `Add a few notes to search among them...`);
+        } else {
+            this.searchInput.classList.remove("hidden");
+            this.searchInput.setAttribute("placeholder", `Search among ${notesNum} notes...`);
+        }
+    }
+
+    // ================================================================================================
+
+    // show all miniature els and note els
+    showAllMinisNotes() {
+        const allMiniatureEls = [...document.querySelectorAll(".all-entries__miniature")];
+        const allNoteEls = [...document.querySelectorAll(".all-entries__note")];
+        allMiniatureEls.forEach((el) => el.classList.remove("hidden"));
+        allNoteEls.forEach((el) => el.classList.remove("hidden"));
+    }
+
+    // ================================================================================================
+
+    filterNotes(idsArr) {
+        this.showAllMinisNotes(); // unhiding all first
+        const allMiniatureEls = [...document.querySelectorAll(".all-entries__miniature")];
+        const allNoteEls = [...document.querySelectorAll(".all-entries__note")];
+        const miniaturesToHide = allMiniatureEls.filter((miniatureEl) => !idsArr.includes(+miniatureEl.dataset.id));
+        const notesToHide = allNoteEls.filter((miniatureEl) => !idsArr.includes(+miniatureEl.dataset.id));
+        miniaturesToHide.forEach((el) => el.classList.add("hidden"));
+        notesToHide.forEach((el) => el.classList.add("hidden"));
+    }
+
+    // ================================================================================================
+
+    handleSeachInput() {
+        handleSeachInput();
+    }
+
+    // ================================================================================================
+
+    toggleAllEntriesElements(showFlag = "show") {
+        if (showFlag === "show") {
+            this.searchSection.classList.remove("hidden");
+            this.allEntriesWrapper.classList.remove("hidden");
+        } else {
+            this.searchSection.classList.add("hidden");
+            this.allEntriesWrapper.classList.add("hidden");
+        }
     }
 
     // ================================================================================================

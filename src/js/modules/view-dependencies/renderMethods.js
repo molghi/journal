@@ -21,9 +21,20 @@ function showMessage(type, text) {
     Visual.removeMessages(); // removing before rendering
 
     const div = document.createElement("div");
-    const typeMsg = type === "error" ? "error" : type === "success" ? "success" : ""; // defining the type
+    const typeMsg = type === "error" ? "error" : type === "success" ? "success" : "notification"; // defining the type
     div.classList.add("message", typeMsg);
     div.innerHTML = text;
+
+    if (typeMsg === "notification") {
+        // div.style.opacity = 0;
+        div.style.transition = `opacity 0.3s`;
+        div.style.animation = "reveal 1s linear 0s 1 initial both"; // animation: name duration timing-function delay iteration-count direction fill-mode;
+        setTimeout(() => {
+            Visual.containerEl.appendChild(div);
+            // div.style.opacity = 1;
+        }, 500);
+        return;
+    }
 
     Visual.containerEl.appendChild(div);
 
@@ -31,7 +42,7 @@ function showMessage(type, text) {
     div.style.animation = "pulse 0.5s ease-in-out";
 
     setTimeout(() => {
-        Visual.containerEl.removeChild(div);
+        if (document.querySelector(".message")) Visual.containerEl.removeChild(div);
     }, 5000);
 }
 
@@ -40,7 +51,9 @@ function showMessage(type, text) {
 function renderEntriesBrowser(titlesArr, idsArr, shortContentArr) {
     const html = titlesArr
         .map((title, i) => {
-            return `<div class="all-entries__miniature" title="Note: ${shortContentArr[i]}..." data-id="${idsArr[i]}">${title}</div>`;
+            return `<div class="all-entries__miniature" title="Note: ${shortContentArr[i].replaceAll("<br>", " ")}..." data-id="${
+                idsArr[i]
+            }">${title}</div>`;
         })
         .join("");
     Visual.allEntriesBrowser.innerHTML = ``;
