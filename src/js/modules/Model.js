@@ -1,21 +1,21 @@
 // Model is responsible for all logic in the app: all computations, calculations, and data operations
 
 import { NULL } from "sass";
+
+// importing dependencies:
 import LS from "./model-dependencies/localStorage.js";
+import { exportNotesJson, exportNotesTxt } from "./model-dependencies/export.js";
 
 class Model {
     #state = {
-        formMode: "adding",
         notes: [],
         accentColor: "green",
     };
 
     constructor() {
         this.timer = "";
-        this.getNotes();
+        this.getNotes(); // fetching from LS
         this.fetchAccentColor(); // fetching from LS and updating only the state
-
-        console.log(this.#state.notes);
     }
 
     // ================================================================================================
@@ -26,9 +26,13 @@ class Model {
 
     getStateNotes = () => this.#state.notes;
 
-    getMode = () => this.#state.formMode;
-
     getAccentColor = () => this.#state.accentColor;
+
+    // ================================================================================================
+
+    saveNotesToLS() {
+        LS.save("myJournal", this.#state.notes, "reference"); // push to LS a reference type
+    }
 
     // ================================================================================================
 
@@ -58,6 +62,7 @@ class Model {
 
     // ================================================================================================
 
+    // adding a new note to the state and LS
     addNote(dateInput, keywordsInput, titleInput, textareaInput) {
         const newNote = {};
         newNote.time = new Date().toISOString();
@@ -68,7 +73,7 @@ class Model {
         newNote.note = textareaInput.trim().replaceAll("\n", "<br>");
         this.#state.notes.push(newNote);
         console.log(this.#state.notes);
-        LS.save("myJournal", this.#state.notes, "reference"); // push to LS a reference type
+        this.saveNotesToLS();
     }
 
     // ================================================================================================
@@ -95,6 +100,7 @@ class Model {
 
     // ================================================================================================
 
+    // get from LS
     getNotes() {
         const fetched = LS.get("myJournal", "reference");
         if (!fetched) return;
@@ -107,7 +113,7 @@ class Model {
         const index = this.#state.notes.findIndex((note) => note.id === +id);
         if (index < 0) return;
         this.#state.notes.splice(index, 1);
-        LS.save("myJournal", this.#state.notes, "reference"); // push to LS a reference type
+        this.saveNotesToLS();
     }
 
     // ================================================================================================
@@ -125,12 +131,13 @@ class Model {
             const newKeywords = !newValue.includes(",") ? newValue : newValue.split(",").map((x) => x.trim());
             this.#state.notes[index].keywords = newKeywords;
         }
-        LS.save("myJournal", this.#state.notes, "reference"); // push to LS a reference type
+        this.saveNotesToLS();
         if (editWhat === "keywords") return this.#state.notes[index].keywords; // returning to re-render
     }
 
     // ================================================================================================
 
+    // get the text (the note body itself) of some note
     getNoteText(noteId) {
         const index = this.#state.notes.findIndex((note) => note.id === +noteId);
         if (index < 0) return;
@@ -139,6 +146,7 @@ class Model {
 
     // ================================================================================================
 
+    // checking the input accent color
     checkNewColor(newColor) {
         // mimicking DOM addition to get the computed color
         const span = document.createElement("span");
@@ -159,6 +167,7 @@ class Model {
 
     // ================================================================================================
 
+    // setting new accent color
     setAccentColor(color) {
         this.#state.accentColor = color;
         LS.save("myJournalAccentColor", this.#state.accentColor, "prim"); // push to LS a primitive type
@@ -166,6 +175,7 @@ class Model {
 
     // ================================================================================================
 
+    // getting the accent color from LS
     fetchAccentColor() {
         const fetched = LS.get("myJournalAccentColor", "prim");
         if (!fetched) return;
@@ -176,67 +186,14 @@ class Model {
 
     // exporting as .json
     exportNotesJson() {
-        const data = this.#state.notes;
-        const [year, month, date, hours, minutes, seconds] = this.getCurrentTime();
-
-        const filename = `my-notes--${date}-${month}-${year.toString().slice(2)}--${hours}-${minutes}.json`;
-
-        const json = JSON.stringify(data, null, 2); // Converting data to JSON: Converts the JavaScript object 'data' into a formatted JSON string. The 'null, 2' arguments ensure the output is pretty-printed with 2-space indentation for readability.
-        const blob = new Blob([json], { type: "application/json" }); // Creating a blob: Creates a binary large object (Blob) containing the JSON string, specifying the MIME type as 'application/json' to ensure it's recognised as a JSON file.
-        const url = URL.createObjectURL(blob); // Creating a download URL: Generates a temporary URL pointing to the Blob, enabling it to be downloaded as a file by associating it with a download link.
-
-        // Create an invisible anchor element for downloading
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = filename;
-
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-
-        URL.revokeObjectURL(url); // Clean up the URL
+        exportNotesJson();
     }
 
     // ================================================================================================
 
     // exporting as .txt
     exportNotesTxt() {
-        const data = this.prepareForExport();
-        const [year, month, date, hours, minutes, seconds] = this.getCurrentTime();
-
-        const filename = `my-notes--${date}-${month}-${year.toString().slice(2)}--${hours}-${minutes}.txt`;
-
-        const blob = new Blob([data], { type: "text/plain" }); // Create a Blob with the content and specify text/plain MIME type
-
-        const anchor = document.createElement("a"); // Create a temporary anchor element
-        anchor.href = URL.createObjectURL(blob); // Create an object URL for the Blob
-        anchor.download = filename; // Set the filename for download
-
-        anchor.click(); // Trigger the download
-
-        URL.revokeObjectURL(anchor.href); // Clean up the object URL
-    }
-
-    // ================================================================================================
-
-    // dependency of 'exportNotesTxt' -- preparing notes to be exported as .txt
-    prepareForExport() {
-        const separator = `---------------------------------------------------------------------`;
-        const result = this.#state.notes.map((noteObj) => {
-            const trueTime = new Date(noteObj.time);
-            const trueDate = `${trueTime.getDate()}/${trueTime.getMonth() + 1}/${trueTime.getFullYear().toString().slice(2)}`;
-            const keywords = !noteObj.keywords
-                ? ""
-                : !Array.isArray(noteObj.keywords)
-                ? `Keywords: ${noteObj.keywords}\n\n`
-                : `Keywords: ${noteObj.keywords.join(", ")}\n\n`;
-            return `${noteObj.title}\n\n${noteObj.note.replaceAll("<br>", "\n")}\n\n${keywords}Date: ${
-                noteObj.dateInput
-            }  (${trueDate})\n\n\n${separator}\n\n\n`;
-        });
-        const notesNum = result.length;
-        result.unshift(`Your Notes (${notesNum})\n\n\n`, separator + "\n\n\n");
-        return result.join("");
+        exportNotesTxt();
     }
 
     // ================================================================================================
@@ -259,7 +216,6 @@ class Model {
             case 10:
             case 11:
                 return "Autumn";
-
             default:
                 return null;
         }
@@ -267,6 +223,7 @@ class Model {
 
     // ================================================================================================
 
+    // getting the keywords of some note by its id
     getKeywords(noteId) {
         const index = this.#state.notes.findIndex((note) => note.id === +noteId);
         return this.#state.notes[index].keywords;
@@ -274,6 +231,7 @@ class Model {
 
     // ================================================================================================
 
+    // filtering notes: happens upon submitting the search field
     filterNotes(inputValue) {
         const searchByContent = this.#state.notes.filter((noteObj) =>
             noteObj.note.toLowerCase().includes(inputValue.toLowerCase())

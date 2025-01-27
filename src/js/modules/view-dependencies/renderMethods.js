@@ -3,6 +3,7 @@ import { crossIcon } from "./icons.js";
 
 // ================================================================================================
 
+// render the current time at the bottom left
 function renderTimeElement(year, month, date, hours, minutes, seconds) {
     Visual.timeEl.innerHTML = `${hours % 12}<span>:</span>${minutes}`;
     Visual.timeEl.setAttribute("title", `Now: ${date}/${month}/${year.toString().slice(2)}  ̶ ${hours}:${minutes}`);
@@ -10,6 +11,7 @@ function renderTimeElement(year, month, date, hours, minutes, seconds) {
 
 // ================================================================================================
 
+// render the date input of the main form
 function renderFormDateEl(year, month, date) {
     Visual.formDateInput.value = `${date}/${month}/${year.toString().slice(2)}`;
     Visual.formDateInput.nextElementSibling.classList.add("moved-up");
@@ -17,7 +19,8 @@ function renderFormDateEl(year, month, date) {
 
 // ================================================================================================
 
-function showMessage(type, text) {
+// show message in the UI
+function showMessage(type, text, timeout, position) {
     Visual.removeMessages(); // removing before rendering
 
     const div = document.createElement("div");
@@ -26,12 +29,10 @@ function showMessage(type, text) {
     div.innerHTML = text;
 
     if (typeMsg === "notification") {
-        // div.style.opacity = 0;
         div.style.transition = `opacity 0.3s`;
         div.style.animation = "reveal 1s linear 0s 1 initial both"; // animation: name duration timing-function delay iteration-count direction fill-mode;
         setTimeout(() => {
             Visual.containerEl.appendChild(div);
-            // div.style.opacity = 1;
         }, 500);
         return;
     }
@@ -43,11 +44,17 @@ function showMessage(type, text) {
 
     setTimeout(() => {
         if (document.querySelector(".message")) Visual.containerEl.removeChild(div);
-    }, 5000);
+    }, timeout || 5000);
+
+    if (position === "bottom") {
+        div.style.position = "absolute";
+        div.style.bottom = "10px";
+    }
 }
 
 // ================================================================================================
 
+// render miniature elements
 function renderEntriesBrowser(titlesArr, idsArr, shortContentArr) {
     const html = titlesArr
         .map((title, i) => {
@@ -56,16 +63,19 @@ function renderEntriesBrowser(titlesArr, idsArr, shortContentArr) {
             }">${title}</div>`;
         })
         .join("");
+
     Visual.allEntriesBrowser.innerHTML = ``;
     Visual.allEntriesBrowser.insertAdjacentHTML("beforeend", html);
 }
 
 // ================================================================================================
 
+// render one note element
 function renderNote(noteObj) {
     const div = document.createElement("div");
     div.classList.add("all-entries__note");
     div.dataset.id = noteObj.id;
+
     const keywordsEl = !Array.isArray(noteObj.keywords)
         ? `<button>${noteObj.keywords}</button>`
         : noteObj.keywords.map((keyword) => `<button>${keyword}</button>`).join("");

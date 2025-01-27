@@ -19,6 +19,7 @@ function listenToBlur() {
 
 // ================================================================================================
 
+// handle the submit of the form to add new notes
 function handleFormSubmit(handler) {
     Visual.formEl.addEventListener("submit", (e) => {
         e.preventDefault();
@@ -32,6 +33,7 @@ function handleFormSubmit(handler) {
 
 // ================================================================================================
 
+// handle clicks in the .header section (btns Add New and View All)
 function handleHeaderNav(handler) {
     Visual.headerNavEl.addEventListener("click", (e) => {
         const clickedBtn = e.target.closest("button");
@@ -41,6 +43,7 @@ function handleHeaderNav(handler) {
 
 // ================================================================================================
 
+// handle clicks that happen in View All
 function handleAllNotesActions(handler) {
     Visual.allEntriesSection.addEventListener("click", (e) => {
         if (Visual.allEntriesSection.classList.contains("hidden")) return;
@@ -98,31 +101,30 @@ function handleAllNotesActions(handler) {
 
 // ================================================================================================
 
+// listen to the blur event on any input in the All Entries section -- do I use it anywhere?...
 function listenToBlurAllNotes(handler) {
     Visual.allEntriesSection.querySelectorAll("input").forEach((input) => {
         input.addEventListener("blur", (e) => {
             // if (Visual.allEntriesSection.classList.contains("hidden")) return;
-
-            console.log(`listenToBlurAllNotes`, e.target);
+            // console.log(`listenToBlurAllNotes`, e.target);
         });
     });
 }
 
 // ================================================================================================
 
+// handle the actions menu: Change color, Export notes, Import notes
 function handleActionsMenu(handler) {
     Visual.actionsMenu.addEventListener("click", (e) => {
         if (!e.target.classList.contains("action-action")) return;
         const actionType = e.target.textContent.trim().toLowerCase();
-
-        // if (actionType === "change color") {
         handler(actionType);
-        // }
     });
 }
 
 // ================================================================================================
 
+// listen to auto scroll that can happen when you are in View All and click on some note miniature
 function listenToAutoScroll() {
     Visual.allEntriesBox.addEventListener("scroll", (e) => {
         // Visual.allEntriesBox is a scrollable container
@@ -147,6 +149,7 @@ function addFindingAnimation(noteEl) {
 
 // ================================================================================================
 
+// handle submitting the search form
 function handleSearchForm(handler) {
     Visual.searchForm.addEventListener("submit", (e) => {
         e.preventDefault();
@@ -157,13 +160,21 @@ function handleSearchForm(handler) {
 
 // ================================================================================================
 
-function handleSeachInput() {
+// handle typing in the search field
+function handleSearchInput() {
     Visual.searchInput.addEventListener("input", function (e) {
         if (this.value.length === 0) {
             // unhide all notes
             Visual.showAllMinisNotes();
         }
     });
+}
+
+// ================================================================================================
+
+// react to file import
+function reactToFileInput(handler) {
+    Visual.fileInputEl.addEventListener("change", handler); // reacting to the import event
 }
 
 // ================================================================================================
@@ -177,5 +188,6 @@ export {
     handleActionsMenu,
     listenToAutoScroll,
     handleSearchForm,
-    handleSeachInput,
+    handleSearchInput,
+    reactToFileInput,
 };
