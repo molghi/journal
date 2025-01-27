@@ -33,6 +33,10 @@
         opacity: 1;
         box-shadow: 0 0 1px var(--accent);
     }
+    @media (max-width: #{initial.$md2}px) {
+        width: 40px;
+        height: 40px;
+    }
 }
 
 .actions-menu {
@@ -41,8 +45,6 @@
     left: 0;
     opacity: 0;
     visibility: hidden;
-    // padding-top: 10px;
-    // padding-bottom: 10px;
     padding: 10px;
     transition: all 0.3s;
     background-color: var(--bg);
@@ -59,5 +61,8 @@
     }
     &:active {
         opacity: 0.5;
+    }
+    @media (max-width: #{initial.$md2}px) {
+        padding: 15px;
     }
 }

@@ -16,6 +16,7 @@ function exportNotesJson() {
     link.href = url;
     link.download = filename;
 
+    // clicking programmatically and removing it right after
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -45,9 +46,10 @@ function exportNotesTxt() {
 
 // ================================================================================================
 
-// dependency of 'exportNotesTxt' -- preparing notes to be exported as .txt
+// dependency of 'exportNotesTxt' -- preparing notes to be exported as .txt -- just to have it nicely formatted
 function prepareForExport() {
     const separator = `---------------------------------------------------------------------`;
+
     const result = Logic.getStateNotes().map((noteObj) => {
         const trueTime = new Date(noteObj.time);
         const trueDate = `${trueTime.getDate()}/${trueTime.getMonth() + 1}/${trueTime.getFullYear().toString().slice(2)}`;
@@ -60,6 +62,7 @@ function prepareForExport() {
             noteObj.dateInput
         }  (${trueDate})\n\n\n${separator}\n\n\n`;
     });
+
     const notesNum = result.length;
     result.unshift(`Your Notes (${notesNum})\n\n\n`, separator + "\n\n\n");
     return result.join("");

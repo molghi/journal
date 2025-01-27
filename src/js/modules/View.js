@@ -46,11 +46,31 @@ class View {
         this.searchSection = document.querySelector(".search");
         this.allEntriesWrapper = document.querySelector(".all-entries__box");
         this.fileInputEl = document.querySelector(".importer");
+        this.headerSection = document.querySelector(".header");
 
         this.scrollTimeout = "";
         this.clickedElId = 0;
         this.lastScrollTop = 0;
         this.scrollBoxDisplacement = 0;
+
+        this.miniatureClicked = false;
+    }
+
+    // ================================================================================================
+
+    // revealing the Add New form smoothly on page refresh
+    revealOnAppStart() {
+        this.journalFormSection.style.animation = "reveal 0.3s linear 0.5s";
+        this.searchSection.style.transition = "opacity .3s";
+        this.searchSection.style.display = "none";
+        this.headerSection.style.transition = "opacity .3s";
+        setTimeout(() => {
+            this.journalFormSection.style.animation = "none";
+            this.journalFormSection.style.opacity = 1;
+            this.searchSection.style.opacity = 1;
+            this.searchSection.style.display = "block";
+            this.headerSection.style.opacity = 1;
+        }, 800);
     }
 
     // ================================================================================================

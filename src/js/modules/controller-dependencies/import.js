@@ -12,6 +12,7 @@ function processInput(event) {
         try {
             const jsonData = JSON.parse(e.target.result); // Parse the JSON content
             const isValidInput = checkValidInput(jsonData);
+
             if (!isValidInput) {
                 Visual.showMessage(
                     "error",
@@ -22,8 +23,10 @@ function processInput(event) {
                     `Invalid JSON!\nPerhaps the formatting of the file was wrong...\nYou can import JSON formatted the same as what you can export.`
                 );
             }
+
             addFromImported(jsonData); // adding to the state and pushing to LS
             Visual.showMessage("success", "Import successful!", undefined, "bottom");
+
             if (!Visual.allEntriesSection.classList.contains("hidden")) {
                 // means I am viewing all notes now and they must be updated (re-rendered)
                 const updatedNotes = Logic.getStateNotes();
@@ -44,6 +47,8 @@ function processInput(event) {
                 10000
             );
             return null;
+        } finally {
+            Visual.fileInputEl.value = ""; // resetting the file input value to be able to import again without problems
         }
     };
 
@@ -52,7 +57,7 @@ function processInput(event) {
 
 // ================================================================================================
 
-// dependency of 'processInput'
+// dependency of 'processInput' -- validating the input/imported thing -- making sure it's formatted the way I allow it
 function checkValidInput(arr) {
     if (!Array.isArray(arr)) return;
     let passed = true;

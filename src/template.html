@@ -12,7 +12,7 @@
     <body style="background-color: #000">
         <div class="section journal">
             <div class="container">
-                <div class="header">
+                <div style="opacity: 0" class="header">
                     <h1><%= htmlWebpackPlugin.options.title %></h1>
                     <div class="header__nav">
                         <button class="header__btn header__btn--add active">Add New</button>
@@ -20,7 +20,7 @@
                     </div>
                 </div>
 
-                <div class="journal__form-box">
+                <div style="opacity: 0" class="journal__form-box">
                     <form action="#" class="journal__form">
                         <div class="journal__form-row">
                             <div class="journal__form-input-box">
@@ -81,7 +81,7 @@
                 </div>
 
                 <div class="all-entries hidden">
-                    <div class="search">
+                    <div style="display: none" class="search">
                         <form action="#" class="search__form">
                             <input type="text" class="search__input" placeholder="Search" />
                         </form>

@@ -4,18 +4,39 @@
     &__box {
         display: flex;
         column-gap: 30px;
+        @media (max-width: #{initial.$md2}px) {
+            column-gap: 20px;
+        }
+        @media (max-width: 650px) {
+            flex-direction: column;
+            row-gap: 20px;
+        }
     }
 
     &__browser {
         border: 1px solid var(--accent);
         flex: 0 1 25%;
-        padding: 15px 10px;
+        padding: 10px;
         align-self: start;
         color: var(--white);
         min-width: 200px;
-        // max-height: 597px;
         max-height: 73vh;
         overflow-y: auto;
+        overflow-x: hidden;
+        @media (max-width: #{initial.$md2}px) {
+            min-width: 150px;
+            padding: 10px;
+        }
+        @media (max-width: #{initial.$md3}px) {
+            min-width: 120px;
+            padding: 5px;
+        }
+        @media (max-width: 650px) {
+            min-width: initial;
+            width: 100%;
+            padding: 10px;
+            max-height: 94px;
+        }
     }
 
     &__notes {
@@ -28,6 +49,16 @@
         overflow: hidden;
         overflow-y: auto;
         min-width: 740px;
+        @media (max-width: #{initial.$md2}px) {
+            min-width: initial;
+        }
+        @media (max-width: 650px) {
+            padding-bottom: 50px;
+            padding-right: 4px;
+        }
+        @media (max-width: #{initial.$md4}px) {
+            padding-bottom: 80px;
+        }
     }
 
     &__miniature {
@@ -35,12 +66,21 @@
         font-size: 14px;
         cursor: pointer;
         white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
         &:hover {
             background-color: var(--accent);
             color: var(--bg);
         }
         &:active {
             opacity: 0.7;
+        }
+        @media (max-width: #{initial.$md2}px) {
+            padding: 5px;
+        }
+        @media (max-width: #{initial.$md3}px) {
+            padding: 5px 3px;
+            font-size: 12px;
         }
     }
 
@@ -54,6 +94,9 @@
                 opacity: 0.5;
             }
         }
+        @media (max-width: #{initial.$md4}px) {
+            padding: 15px;
+        }
     }
 
     &__note-row {
@@ -61,6 +104,11 @@
         align-items: center;
         justify-content: space-between;
         column-gap: 30px;
+        @media (max-width: #{initial.$md3}px) {
+            flex-wrap: wrap;
+            column-gap: 20px;
+            row-gap: 20px;
+        }
     }
 
     &__note-title {
@@ -69,6 +117,7 @@
         margin-bottom: 15px;
         cursor: pointer;
         color: var(--white);
+        min-height: 27px;
     }
 
     &__note-text {
@@ -76,7 +125,14 @@
         margin-bottom: 15px;
         width: 100%;
         color: var(--white);
+        min-height: 15px;
         cursor: pointer;
+        @media (max-width: 650px) {
+            font-size: 13px;
+        }
+        @media (max-width: #{initial.$md4}px) {
+            font-size: 12px;
+        }
     }
 
     &__note-keywords {
@@ -101,6 +157,13 @@
             padding: 0 5px;
             border: none;
         }
+        @media (max-width: #{initial.$md3}px) {
+            white-space: initial;
+            font-size: 14px;
+        }
+        @media (max-width: #{initial.$md4}px) {
+            font-size: 13px;
+        }
     }
 
     &__note-date {
@@ -110,6 +173,14 @@
         flex-shrink: 0;
         flex-basis: 113px;
         max-width: 121px;
+        white-space: nowrap;
+        @media (max-width: #{initial.$md3}px) {
+            flex-basis: auto;
+            font-size: 14px;
+        }
+        @media (max-width: #{initial.$md4}px) {
+            font-size: 13px;
+        }
     }
 
     &__note-button {

@@ -11,7 +11,7 @@ function renderTimeElement(year, month, date, hours, minutes, seconds) {
 
 // ================================================================================================
 
-// render the date input of the main form
+// render the date input of the main form in Add New
 function renderFormDateEl(year, month, date) {
     Visual.formDateInput.value = `${date}/${month}/${year.toString().slice(2)}`;
     Visual.formDateInput.nextElementSibling.classList.add("moved-up");
@@ -21,7 +21,7 @@ function renderFormDateEl(year, month, date) {
 
 // show message in the UI
 function showMessage(type, text, timeout, position) {
-    Visual.removeMessages(); // removing before rendering
+    Visual.removeMessages(); // removing (if any) before rendering new
 
     const div = document.createElement("div");
     const typeMsg = type === "error" ? "error" : type === "success" ? "success" : "notification"; // defining the type
@@ -58,9 +58,10 @@ function showMessage(type, text, timeout, position) {
 function renderEntriesBrowser(titlesArr, idsArr, shortContentArr) {
     const html = titlesArr
         .map((title, i) => {
-            return `<div class="all-entries__miniature" title="Note: ${shortContentArr[i].replaceAll("<br>", " ")}..." data-id="${
-                idsArr[i]
-            }">${title}</div>`;
+            return `<div class="all-entries__miniature" title="Title: ${title}\nNote: ${shortContentArr[i].replaceAll(
+                "<br>",
+                " "
+            )}..." data-id="${idsArr[i]}">${title}</div>`;
         })
         .join("");
 
@@ -81,7 +82,7 @@ function renderNote(noteObj) {
         : noteObj.keywords.map((keyword) => `<button>${keyword}</button>`).join("");
 
     div.innerHTML = `<div class="all-entries__note-row">
-<div class="all-entries__note-title">${noteObj.title}</div>
+<div class="all-entries__note-title">${noteObj.title || "Journal Entry"}</div>
 </div>
 <div class="all-entries__note-row">
 <div class="all-entries__note-text">${noteObj.note}</div>

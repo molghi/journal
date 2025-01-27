@@ -2,7 +2,7 @@ import { Visual } from "../../Controller.js";
 
 // ================================================================================================
 
-// listen to the blur event (in the form where one adds new notes) on all inputs inside the form: if it happens change styles on label el
+// listen to the blur event (in the form where one adds new notes) on all inputs inside the form: if it happens, change styles on the label el
 function listenToBlur() {
     const allFormInputs = [...Visual.formEl.querySelectorAll(".journal__form-input")];
     allFormInputs.forEach((inputEl) => {
@@ -19,7 +19,7 @@ function listenToBlur() {
 
 // ================================================================================================
 
-// handle the submit of the form to add new notes
+// handle the submit of the form to add a new note
 function handleFormSubmit(handler) {
     Visual.formEl.addEventListener("submit", (e) => {
         e.preventDefault();
@@ -48,19 +48,21 @@ function handleAllNotesActions(handler) {
     Visual.allEntriesSection.addEventListener("click", (e) => {
         if (Visual.allEntriesSection.classList.contains("hidden")) return;
 
-        let clickedNoteId = e.target.closest(".all-entries__note")?.dataset.id;
-        if (!clickedNoteId) clickedNoteId = e.target.closest(".all-entries__miniature")?.dataset.id;
+        let clickedNoteId = e.target.closest(".all-entries__note")?.dataset.id; // note id
+        if (!clickedNoteId) clickedNoteId = e.target.closest(".all-entries__miniature")?.dataset.id; // miniature id or undef
 
         if (e.target.closest(".all-entries__note-button")) {
             handler("delete", clickedNoteId);
         }
 
         if (e.target.closest(".all-entries__note-title")) {
+            if (e.target.tagName !== "DIV") return; // this check is needed because I put input there to edit
             const currentValue = e.target.closest(".all-entries__note-title").textContent;
             handler("edit title", clickedNoteId, currentValue);
         }
 
         if (e.target.closest(".all-entries__note-text")) {
+            if (e.target.tagName !== "DIV") return; // this check is needed because I put textarea there to edit
             const currentValue = e.target.closest(".all-entries__note-text").textContent;
             handler("edit text", clickedNoteId, currentValue);
         }
@@ -76,10 +78,9 @@ function handleAllNotesActions(handler) {
             const scrollableContainerBottom = Visual.allEntriesBox.offsetTop + Visual.allEntriesBox.offsetHeight;
             const clickedNoteElTop = noteEl.getBoundingClientRect().top;
             const clickedNoteElBottom = noteEl.getBoundingClientRect().bottom;
-
             const headerHeight = window.getComputedStyle(document.querySelector(".header")).height;
             const headerMarginBottom = window.getComputedStyle(document.querySelector(".header")).marginBottom;
-            const offset = parseInt(headerHeight) + parseInt(headerMarginBottom);
+            const offset = parseInt(headerHeight) + parseInt(headerMarginBottom); // offset from the top of the page to the beginning of the scrollable container
 
             if (noteEl.getBoundingClientRect().top === offset) {
                 // if true then the element is at the top of the scrollable container, no scrolling happens
@@ -94,6 +95,7 @@ function handleAllNotesActions(handler) {
             } else {
                 // else scroll to that note
                 handler("scroll to note", clickedNoteId);
+                Visual.miniatureClicked = true; // needed to prevent highlighting the found note every time when scrolling happens
             }
         }
     });
@@ -124,16 +126,18 @@ function handleActionsMenu(handler) {
 
 // ================================================================================================
 
-// listen to auto scroll that can happen when you are in View All and click on some note miniature
+// listen to (auto) scroll that can happen when you are in View All and click on a note miniature that is not in sight: it scrolls to it
 function listenToAutoScroll() {
     Visual.allEntriesBox.addEventListener("scroll", (e) => {
         // Visual.allEntriesBox is a scrollable container
 
-        clearTimeout(Visual.scrollTimeout);
+        clearTimeout(Visual.scrollTimeout); // clearing timers (if any)
+
+        if (!Visual.miniatureClicked) return; // without that it keeps highlighting the clicked note if any scrolling happens
 
         Visual.scrollTimeout = setTimeout(() => {
             const noteEl = document.querySelector(`.all-entries__notes [data-id="${Visual.clickedElId}"]`);
-            addFindingAnimation(noteEl); // add some animation to the element to which it just scrolled
+            addFindingAnimation(noteEl); // some pulsating animation to the element to which it just scrolled
         }, 200);
     });
 }
@@ -142,6 +146,7 @@ function listenToAutoScroll() {
 function addFindingAnimation(noteEl) {
     if (!noteEl) return;
     noteEl.style.animation = "shine 1s linear 0s 2"; // animation: name duration timing-function delay iteration-count direction fill-mode;
+    Visual.miniatureClicked = false;
     setTimeout(() => {
         noteEl.style.animation = "none";
     }, 2000);
@@ -164,7 +169,7 @@ function handleSearchForm(handler) {
 function handleSearchInput() {
     Visual.searchInput.addEventListener("input", function (e) {
         if (this.value.length === 0) {
-            // unhide all notes
+            // if the search input is empty, unhide all notes and all miniatures
             Visual.showAllMinisNotes();
         }
     });

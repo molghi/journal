@@ -15,7 +15,7 @@ class Model {
     constructor() {
         this.timer = "";
         this.getNotes(); // fetching from LS
-        this.fetchAccentColor(); // fetching from LS and updating only the state
+        this.fetchAccentColor(); // fetching from LS and updating just the state (here)
     }
 
     // ================================================================================================
@@ -30,6 +30,7 @@ class Model {
 
     // ================================================================================================
 
+    // pushing to local storage
     saveNotesToLS() {
         LS.save("myJournal", this.#state.notes, "reference"); // push to LS a reference type
     }
@@ -72,13 +73,12 @@ class Model {
         newNote.title = titleInput.trim() || "Journal Entry";
         newNote.note = textareaInput.trim().replaceAll("\n", "<br>");
         this.#state.notes.push(newNote);
-        console.log(this.#state.notes);
         this.saveNotesToLS();
     }
 
     // ================================================================================================
 
-    // returns boolean (isInputOk) and message (if there was error)
+    // returns boolean (isInputOk) and message (if there was error) -- validate the Add New form
     validateInput(arr) {
         const [dateInput, keywordsInput, titleInput, textareaInput] = arr;
         // so if the date input was empty, I put there the today date -- but if it was filled, it can take only digits, dots or slashes, nothing else
@@ -109,6 +109,7 @@ class Model {
 
     // ================================================================================================
 
+    // delete from the state and LS
     deleteNote(id) {
         const index = this.#state.notes.findIndex((note) => note.id === +id);
         if (index < 0) return;
@@ -118,26 +119,29 @@ class Model {
 
     // ================================================================================================
 
+    // edit in the state and push to LS
     editNote(editWhat, noteId, newValue) {
         const index = this.#state.notes.findIndex((note) => note.id === +noteId);
         if (index < 0) return;
+
         if (editWhat === "title") {
-            this.#state.notes[index].title = newValue;
+            this.#state.notes[index].title = newValue || "Journal Entry";
         }
         if (editWhat === "text") {
             this.#state.notes[index].note = newValue;
         }
         if (editWhat === "keywords") {
-            const newKeywords = !newValue.includes(",") ? newValue : newValue.split(",").map((x) => x.trim());
+            const newKeywords = !newValue.includes(",") ? newValue : newValue.split(",").map((x) => x.trim()); // because keywords can be either a string (if one keyword) or an array (if more than one)
             this.#state.notes[index].keywords = newKeywords;
         }
+
         this.saveNotesToLS();
-        if (editWhat === "keywords") return this.#state.notes[index].keywords; // returning to re-render
+        if (editWhat === "keywords") return this.#state.notes[index].keywords; // returning to re-render then
     }
 
     // ================================================================================================
 
-    // get the text (the note body itself) of some note
+    // get the text (the note body itself) of some note by its id
     getNoteText(noteId) {
         const index = this.#state.notes.findIndex((note) => note.id === +noteId);
         if (index < 0) return;
@@ -146,7 +150,7 @@ class Model {
 
     // ================================================================================================
 
-    // checking the input accent color
+    // checking the input accent color -- returns string (color in rgb)
     checkNewColor(newColor) {
         // mimicking DOM addition to get the computed color
         const span = document.createElement("span");
@@ -167,7 +171,7 @@ class Model {
 
     // ================================================================================================
 
-    // setting new accent color
+    // setting new accent color - in the state and pushing to LS
     setAccentColor(color) {
         this.#state.accentColor = color;
         LS.save("myJournalAccentColor", this.#state.accentColor, "prim"); // push to LS a primitive type
@@ -231,7 +235,7 @@ class Model {
 
     // ================================================================================================
 
-    // filtering notes: happens upon submitting the search field
+    // filtering notes: happens upon submitting the search field -- filtering to get only those note objs that contain inputValue: searching in note body, date, keywords and title
     filterNotes(inputValue) {
         const searchByContent = this.#state.notes.filter((noteObj) =>
             noteObj.note.toLowerCase().includes(inputValue.toLowerCase())
@@ -240,15 +244,15 @@ class Model {
             noteObj.dateInput.toLowerCase().includes(inputValue.toLowerCase())
         );
         const searchByKeywords = this.#state.notes.filter((noteObj) => {
-            const keywordsIsArray = Array.isArray(noteObj.keywords);
+            const keywordsIsArray = Array.isArray(noteObj.keywords); // because keywords can be either a string (if one keyword) or an array (if more than one)
             if (keywordsIsArray) return noteObj.keywords.map((key) => key.toLowerCase()).includes(inputValue.toLowerCase());
             else noteObj.keywords.toLowerCase().includes(inputValue.toLowerCase());
         });
         const searchByTitle = this.#state.notes.filter((noteObj) =>
             noteObj.title.toLowerCase().includes(inputValue.toLowerCase())
         );
-        const allFindings = [...searchByContent, ...searchByDate, ...searchByKeywords, ...searchByTitle];
-        const allFindingsIds = [...new Set(allFindings.map((noteObj) => noteObj.id))];
+        const allFindings = [...searchByContent, ...searchByDate, ...searchByKeywords, ...searchByTitle]; // making a big array out of it all
+        const allFindingsIds = [...new Set(allFindings.map((noteObj) => noteObj.id))]; // removing all duplicates
         return allFindingsIds;
     }
 

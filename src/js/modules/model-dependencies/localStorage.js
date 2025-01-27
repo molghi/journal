@@ -1,20 +1,12 @@
 // local storage operations
 
 class LS {
-    constructor() {
-        // this.save('name', 'John')   -->   NOTE: if you pass a ref type, do not stringify it beforehand else it gets double-stringified!
-        // this.get('name')   -->   NOTE: if you get a ref type, do not parse it!
-        // this.getAll()
-        // this.remove('name')
-        // this.clear()
-        // this.length
-    }
+    constructor() {}
 
     // ================================================================================================
 
     // save to local storage
     save(key, value, type = "prim") {
-        // if (type === "primitive")
         if (type.startsWith("prim")) {
             localStorage.setItem(key, value); // primitives need no JSON-stringifying
         } else {
@@ -26,7 +18,6 @@ class LS {
 
     // retrieve one from local storage
     get(key, type = "primitive") {
-        // if (type === "primitive")
         if (type.startsWith("prim")) {
             return localStorage.getItem(key); // primitives need no JSON-parsing
         } else {

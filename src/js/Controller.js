@@ -20,6 +20,7 @@ import actionsHandler from "./modules/controller-dependencies/actionsHandler.js"
 
 // runs on app start
 function init() {
+    Visual.revealOnAppStart(); // revealing the Add New form smoothly on page refresh
     const [year, month, date, hours, minutes] = Logic.getCurrentTime(); // getting now time
     Visual.renderTimeElement(year, month, date, hours, minutes); // rendering time element (bottom left)
     Visual.renderFormDateEl(year, month, date); // rendering date input in the Add New form
