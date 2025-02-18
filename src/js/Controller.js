@@ -28,6 +28,11 @@ function init() {
     Logic.tickTime(Visual.renderTimeElement); // updating time every 60 seconds
     Visual.setAccentColor(Logic.getAccentColor()); // changing the accent color if it was saved to LS
 
+    Logic.hourlyTimer(() => {
+        const [year, month, date, hours, minutes] = Logic.getCurrentTime();
+        Visual.formDateInput.value = `${date}/${month}/${year.toString().slice(2)}`; // updating form date input every hour
+    });
+
     runEventListeners();
 }
 init();
@@ -71,6 +76,15 @@ function keyHandler(typeOfAction) {
         const [dateInput, keywordsInput, titleInput, textareaInput] = Visual.getFormInputValues();
         onFormSubmit(dateInput, keywordsInput, titleInput, textareaInput);
     }
+    // else if (typeOfAction === "edit textarea enter") {
+    //     console.log(document.querySelector(".textarea-edit").style.height);
+    //     console.log(document.querySelector(".textarea-edit").scrollHeight);
+    //     // document.querySelector(".textarea-edit").style.height = "auto";
+    //     // document.querySelector(".textarea-edit").style.height = document.querySelector(".textarea-edit").scrollHeight + "px";
+    // } else if (typeOfAction === "edit textarea backspace") {
+    //     console.log(document.querySelector(".textarea-edit").style.height);
+    //     // document.querySelector(".textarea-edit").style.height = "auto";
+    // }
 }
 
 // ================================================================================================

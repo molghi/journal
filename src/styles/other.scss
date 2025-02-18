@@ -59,6 +59,10 @@
     color: var(--accent);
     padding: 20px;
     background-color: var(--bg);
+    font-size: 18px;
+    position: fixed;
+    z-index: 5;
+    min-width: 300px;
 }
 .error {
     color: red;

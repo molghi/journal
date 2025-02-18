@@ -130,6 +130,14 @@ function editText(clickedElId) {
     inputEdit.style.height = textElheight; // making it the same height as before
     inputEdit.focus(); // focusing it
     inputEdit.addEventListener("blur", replaceTextEditInput); // listening to the blur event when we need to update the values
+
+    // dynamically resizing textarea: ensuring textarea grows as I type
+    inputEdit.style.height = "auto"; // Reset height to auto to adjust
+    inputEdit.style.height = inputEdit.scrollHeight + "px"; // scrollHeight gives the total height of the content, including overflow
+    inputEdit.addEventListener("input", function () {
+        inputEdit.style.height = "auto"; // doing the same when the input event happens
+        inputEdit.style.height = inputEdit.scrollHeight + "px";
+    });
 }
 
 // ================================================================================================

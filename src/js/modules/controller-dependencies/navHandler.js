@@ -23,6 +23,7 @@ function navHandler(clickedEl) {
             Visual.toggleAllEntriesElements("hide"); // toggling the visibility of .search and .all-entries__box
         } else {
             Visual.removeMessages();
+            Visual.searchInput.value = "";
             Visual.toggleAllEntriesElements("show"); // hiding/showing 2 sections
             const allNoteTitles = allNotes.map((noteObj) => noteObj.title);
             const allNoteIds = allNotes.map((noteObj) => noteObj.id);

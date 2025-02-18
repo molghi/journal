@@ -10,6 +10,7 @@ class Model {
     #state = {
         notes: [],
         accentColor: "green",
+        hourlyTimer: "",
     };
 
     constructor() {
@@ -257,6 +258,16 @@ class Model {
     }
 
     // ================================================================================================
+
+    stopHourlyTimer = () => clearInterval(this.#state.hourlyTimer);
+
+    hourlyTimer(handler) {
+        this.stopHourlyTimer();
+
+        this.#state.hourlyTimer = setInterval(() => {
+            handler();
+        }, 1000 * 60 * 60);
+    }
 }
 
 export default Model;

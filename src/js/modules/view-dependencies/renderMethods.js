@@ -47,9 +47,9 @@ function showMessage(type, text, timeout, position) {
     }, timeout || 5000);
 
     if (position === "bottom") {
-        div.style.position = "absolute";
-        div.style.bottom = "10px";
     }
+    div.style.position = "fixed";
+    div.style.bottom = "20px";
 }
 
 // ================================================================================================
@@ -58,10 +58,9 @@ function showMessage(type, text, timeout, position) {
 function renderEntriesBrowser(titlesArr, idsArr, shortContentArr) {
     const html = titlesArr
         .map((title, i) => {
-            return `<div class="all-entries__miniature" title="Title: ${title}\nNote: ${shortContentArr[i].replaceAll(
-                "<br>",
-                " "
-            )}..." data-id="${idsArr[i]}">${title}</div>`;
+            return `<div class="all-entries__miniature" title="Title: ${title.replaceAll('"', "'")}\nNote: ${shortContentArr[
+                i
+            ].replaceAll("<br>", " ")}..." data-id="${idsArr[i]}">${title}</div>`;
         })
         .join("");
 

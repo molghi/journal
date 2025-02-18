@@ -1,6 +1,7 @@
 @use "./initial";
 
 .search {
+    margin-top: -20px;
     margin-bottom: 30px;
     @media (max-width: #{initial.$md2}px) {
         margin-bottom: 20px;

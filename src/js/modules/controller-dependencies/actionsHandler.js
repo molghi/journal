@@ -1,6 +1,6 @@
 import { Logic, Visual } from "../../Controller.js";
 
-// handle the actions menu: Change color, Export notes, Import notes
+// handle the actions menu: Change color, Export, Import
 function actionsHandler(typeOfAction) {
     if (typeOfAction === "change color") {
         // changing the accent color
