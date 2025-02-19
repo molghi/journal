@@ -15,12 +15,15 @@
 
     &__browser {
         border: 1px solid var(--accent);
-        flex: 0 1 25%;
+        flex-grow: 0;
+        flex-shrink: 1;
+        flex-basis: 25%;
         padding: 10px;
         align-self: start;
         color: var(--white);
         min-width: 200px;
-        max-height: 73vh;
+        max-width: 200px;
+        max-height: 78vh;
         overflow-y: auto;
         overflow-x: hidden;
         @media (max-width: #{initial.$md2}px) {
@@ -44,7 +47,7 @@
         display: flex;
         flex-direction: column;
         row-gap: 30px;
-        max-height: 75vh;
+        max-height: 78vh;
         padding-right: 7px;
         overflow: hidden;
         overflow-y: auto;
@@ -126,6 +129,7 @@
         width: 100%;
         color: var(--white);
         min-height: 15px;
+        white-space: pre-wrap;
         cursor: pointer;
         @media (max-width: 650px) {
             font-size: 13px;

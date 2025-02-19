@@ -118,7 +118,7 @@ class View {
     // ================================================================================================
 
     removeMessages() {
-        if (document.querySelector(".message")) document.querySelector(".message").remove();
+        if (document.querySelector(".message")) [...document.querySelectorAll(".message")].forEach((el) => el.remove());
     }
 
     // ================================================================================================

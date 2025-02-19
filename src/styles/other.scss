@@ -67,16 +67,19 @@
 .error {
     color: red;
     border-color: red;
+    box-shadow: 0 0 10px red;
 }
 
 .success {
     color: limegreen;
     border-color: limegreen;
+    box-shadow: 0 0 10px limegreen;
 }
 
 .notification {
     border: none;
     color: var(--white);
+    box-shadow: none;
     font-style: italic;
 }
 

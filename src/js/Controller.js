@@ -58,6 +58,7 @@ function runEventListeners() {
 
 // happens upon journal form submit, adding a new note
 function onFormSubmit(dateInput, keywordsInput, titleInput, textareaInput) {
+    console.log(dateInput, keywordsInput, titleInput, textareaInput);
     const [inputOk, msg] = Logic.validateInput([dateInput, keywordsInput, titleInput, textareaInput]);
     if (!inputOk) return Visual.showMessage("error", msg);
     Logic.addNote(dateInput, keywordsInput, titleInput, textareaInput); // adding to state and LS

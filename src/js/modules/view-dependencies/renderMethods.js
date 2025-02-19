@@ -40,10 +40,12 @@ function showMessage(type, text, timeout, position) {
     Visual.containerEl.appendChild(div);
 
     div.style.animationFillMode = "both";
-    div.style.animation = "pulse 0.5s ease-in-out";
+    // div.style.animation = "pulse 0.5s ease-in-out";
+    div.style.animation = "reveal 0.3s ease-in-out";
 
     setTimeout(() => {
-        if (document.querySelector(".message")) Visual.containerEl.removeChild(div);
+        // if (document.querySelector(".message")) Visual.containerEl.removeChild(div);
+        if (document.querySelector(".message")) [...document.querySelectorAll(".message")].forEach((el) => el.remove());
     }, timeout || 5000);
 
     if (position === "bottom") {
@@ -60,7 +62,7 @@ function renderEntriesBrowser(titlesArr, idsArr, shortContentArr) {
         .map((title, i) => {
             return `<div class="all-entries__miniature" title="Title: ${title.replaceAll('"', "'")}\nNote: ${shortContentArr[
                 i
-            ].replaceAll("<br>", " ")}..." data-id="${idsArr[i]}">${title}</div>`;
+            ].replaceAll("<br>", "  ")}..." data-id="${idsArr[i]}">${title}</div>`;
         })
         .join("");
 
@@ -79,6 +81,9 @@ function renderNote(noteObj) {
     const keywordsEl = !Array.isArray(noteObj.keywords)
         ? `<button>${noteObj.keywords}</button>`
         : noteObj.keywords.map((keyword) => `<button>${keyword}</button>`).join("");
+
+    // const noteContent = !noteObj.note.includes("  ") ? noteObj.note : noteObj.note.replaceAll("  ", "&nbsp;&nbsp;");
+    // const noteContent = noteObj.note.replace(/^ +/gm, (match) => "&nbsp;".repeat(match.length));
 
     div.innerHTML = `<div class="all-entries__note-row">
 <div class="all-entries__note-title">${noteObj.title || "Journal Entry"}</div>
