@@ -38,6 +38,17 @@ class Model {
 
     // ================================================================================================
 
+    changeModified(id) {
+        const noteChanged = this.#state.notes.find((note) => note.id === +id);
+        if (!noteChanged) return;
+        const date = new Date().toISOString();
+        noteChanged.timeModified = date;
+        this.saveNotesToLS();
+        return date;
+    }
+
+    // ================================================================================================
+
     getCurrentTime() {
         const now = new Date();
         const year = now.getFullYear();

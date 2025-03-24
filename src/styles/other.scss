@@ -137,5 +137,8 @@
 
 .textarea-edit {
     width: 100%;
-    resize: vertical;
+    // resize: vertical;
+    overflow: hidden;
+    overflow-y: auto;
+    resize: none;
 }

@@ -319,6 +319,20 @@ class View {
     }
 
     // ================================================================================================
+
+    updateNoteDate(dateISOString, el) {
+        const elToChange = el.querySelector(".all-entries__note-date");
+
+        const formatDate = (dateISOString) => {
+            const date = new Date(dateISOString);
+            return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear().toString().slice(2)}`;
+        };
+
+        const dateCreated = elToChange.textContent.split(" ")[1];
+        elToChange.setAttribute("title", `Created on ${dateCreated} - Changed on ${formatDate(dateISOString)}`);
+    }
+
+    // ================================================================================================
 }
 
 export default View;

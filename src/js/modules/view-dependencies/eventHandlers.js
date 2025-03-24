@@ -51,6 +51,11 @@ function handleAllNotesActions(handler) {
         let clickedNoteId = e.target.closest(".all-entries__note")?.dataset.id; // note id
         if (!clickedNoteId) clickedNoteId = e.target.closest(".all-entries__miniature")?.dataset.id; // miniature id or undef
 
+        if (e.target.closest(".all-entries__note-keyword")) {
+            const clickedKeyword = e.target.closest(".all-entries__note-keyword").textContent;
+            handler("filter by keywords", clickedKeyword);
+        }
+
         if (e.target.closest(".all-entries__note-button")) {
             handler("delete", clickedNoteId);
         }
@@ -64,7 +69,7 @@ function handleAllNotesActions(handler) {
         if (e.target.closest(".all-entries__note-text")) {
             if (e.target.tagName !== "DIV") return; // this check is needed because I put textarea there to edit
             const currentValue = e.target.closest(".all-entries__note-text").textContent;
-            handler("edit text", clickedNoteId, currentValue);
+            handler("edit text", clickedNoteId, currentValue, e);
         }
 
         if (e.target.closest(".all-entries__note-keywords span")) {

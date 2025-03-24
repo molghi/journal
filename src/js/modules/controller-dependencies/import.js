@@ -25,7 +25,7 @@ function processInput(event) {
             }
 
             addFromImported(jsonData); // adding to the state and pushing to LS
-            Visual.showMessage("success", "Import successful!", undefined, "bottom");
+            Visual.showMessage("success", `Import successful! Notes added: ${jsonData.length}`, undefined, "bottom");
 
             if (!Visual.allEntriesSection.classList.contains("hidden")) {
                 // means I am viewing all notes now and they must be updated (re-rendered)
@@ -38,6 +38,8 @@ function processInput(event) {
                 updatedNotes.forEach((noteObj) => Visual.renderNote(noteObj)); // rendering all notes
                 const notesNumber = updatedNotes.length;
                 Visual.updateSearchPlaceholder(notesNumber); // updating the placeholder (search form) to show how many notes there are
+                document.querySelector(".all-entries__box").classList.remove("hidden");
+                if (jsonData.length > 1) document.querySelector(".search").classList.remove("hidden");
             }
         } catch (err) {
             console.error("Invalid input file", err); // Error handling

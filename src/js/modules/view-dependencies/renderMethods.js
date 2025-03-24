@@ -79,11 +79,16 @@ function renderNote(noteObj) {
     div.dataset.id = noteObj.id;
 
     const keywordsEl = !Array.isArray(noteObj.keywords)
-        ? `<button>${noteObj.keywords}</button>`
-        : noteObj.keywords.map((keyword) => `<button>${keyword}</button>`).join("");
+        ? `<button class="all-entries__note-keyword">${noteObj.keywords}</button>`
+        : noteObj.keywords.map((keyword) => `<button class="all-entries__note-keyword">${keyword}</button>`).join("");
 
     // const noteContent = !noteObj.note.includes("  ") ? noteObj.note : noteObj.note.replaceAll("  ", "&nbsp;&nbsp;");
     // const noteContent = noteObj.note.replace(/^ +/gm, (match) => "&nbsp;".repeat(match.length));
+
+    const formatDate = (dateISOString) => {
+        const date = new Date(dateISOString);
+        return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear().toString().slice(2)}`;
+    };
 
     div.innerHTML = `<div class="all-entries__note-row">
 <div class="all-entries__note-title">${noteObj.title || "Journal Entry"}</div>
@@ -93,9 +98,10 @@ function renderNote(noteObj) {
 </div>
 <div class="all-entries__note-row">
 <div class="all-entries__note-keywords"><span title="Click to edit keywords">Keywords: </span> ${keywordsEl}</div>
-<div class="all-entries__note-date">Date: ${noteObj.dateInput}</div>
+<div class="all-entries__note-date" title="Created on ${noteObj.dateInput}${
+        noteObj.timeModified ? ` − Changed on ${formatDate(noteObj.timeModified)}` : ""
+    }">Date: ${noteObj.dateInput}</div>
 </div><div class="all-entries__note-button">${crossIcon}</div>`;
-
     Visual.allEntriesBox.appendChild(div);
 }
 

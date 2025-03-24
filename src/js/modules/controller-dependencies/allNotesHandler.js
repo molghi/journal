@@ -3,17 +3,19 @@ import { Logic, Visual } from "../../Controller.js";
 // ================================================================================================
 
 // main function here, a router function -- handle clicks that happen in View All
-function allNotesHandler(typeOfAction, clickedElId, currentValue) {
+function allNotesHandler(typeOfAction, clickedElId, currentValue, event) {
     if (typeOfAction === "delete") {
         deleteNote(clickedElId);
     } else if (typeOfAction === "edit title") {
         editTitle(clickedElId, currentValue);
     } else if (typeOfAction === "edit text") {
-        editText(clickedElId);
+        editText(clickedElId, event);
     } else if (typeOfAction === "edit keywords") {
         editKeywords(clickedElId);
     } else if (typeOfAction === `scroll to note`) {
         scrollToNote(clickedElId);
+    } else if (typeOfAction === `filter by keywords`) {
+        filterByKeywords(clickedElId);
     }
 }
 
@@ -109,12 +111,16 @@ function editTitle(clickedElId, currentValue) {
     titleEl.appendChild(inputEdit); // ...and putting there the input instead
     inputEdit.focus(); // focusing it
     inputEdit.addEventListener("blur", replaceTitleEditInput); // listening to the blur event when we need to update the values
+
+    const dateUpdated = Logic.changeModified(clickedElId); // updating noteobj's modified date
+    const elUpdated = document.querySelector(`.all-entries__note[data-id="${clickedElId}"]`);
+    Visual.updateNoteDate(dateUpdated, elUpdated); // updating in UI
 }
 
 // ================================================================================================
 
 // dependency of 'allNotesHandler'
-function editText(clickedElId) {
+function editText(clickedElId, event) {
     const textEl = document.querySelector(`.all-entries__notes div[data-id="${clickedElId}"] .all-entries__note-text`); // finding that text el
     const textElheight = window.getComputedStyle(textEl).height; // getting its current height
 
@@ -127,16 +133,32 @@ function editText(clickedElId) {
     textEl.innerHTML = ``; // removing the text that that text el has now...
     textEl.appendChild(inputEdit); // ...and putting there the textarea instead
 
-    inputEdit.style.height = textElheight; // making it the same height as before
-    inputEdit.focus(); // focusing it
+    // inputEdit.style.height = textElheight; // making it the same height as before
     inputEdit.addEventListener("blur", replaceTextEditInput); // listening to the blur event when we need to update the values
 
     // dynamically resizing textarea: ensuring textarea grows as I type
-    inputEdit.style.height = "auto"; // Reset height to auto to adjust
-    inputEdit.style.height = inputEdit.scrollHeight + "px"; // scrollHeight gives the total height of the content, including overflow
+    const scrollableContainer = document.querySelector(".all-entries__notes");
+    const block = inputEdit.closest(".all-entries__note");
+    // inputEdit.style.height = "auto"; // Reset height to auto to adjust
+    const vhItTakes = 0.63;
+    const visibleHeight = window.innerHeight * vhItTakes;
+    // inputEdit.style.height = inputEdit.scrollHeight <= visibleHeight ? inputEdit.scrollHeight + "px" : visibleHeight + "px"; // scrollHeight gives the total height of the content, including overflow
+    inputEdit.style.height = visibleHeight + "px";
+
+    inputEdit.focus(); // focusing it
+
+    const blockTopRelativeToContainer = block.getBoundingClientRect().top - scrollableContainer.getBoundingClientRect().top; // Get the position of the block relative to the container
+    scrollableContainer.scrollTop += blockTopRelativeToContainer; // Scroll to bring the block to the top of the container
+
     inputEdit.addEventListener("input", function () {
-        inputEdit.style.height = "auto"; // doing the same when the input event happens
-        inputEdit.style.height = inputEdit.scrollHeight + "px";
+        // inputEdit.style.height = "auto"; // doing the same when the input event happens
+        // const visibleHeight = window.innerHeight * vhItTakes;
+        // inputEdit.style.height = inputEdit.scrollHeight <= visibleHeight ? inputEdit.scrollHeight + "px" : visibleHeight + "px"; // scrollHeight gives the total height of the content, including overflow
+        // inputEdit.style.height = inputEdit.scrollHeight + "px";
+
+        const dateUpdated = Logic.changeModified(clickedElId); // updating noteobj's modified date
+        const elUpdated = document.querySelector(`.all-entries__note[data-id="${clickedElId}"]`);
+        Visual.updateNoteDate(dateUpdated, elUpdated); // updating in UI
     });
 }
 
@@ -159,13 +181,30 @@ function editKeywords(clickedElId) {
     // updating in the UI:
     if (Array.isArray(newKeywords)) {
         currentKeywordsEl.innerHTML = `<span title="Click to edit keywords">Keywords: </span>${newKeywords
-            .map((key) => `<button>${key}</button>`)
+            .map((key) => `<button class="all-entries__note-keyword">${key}</button>`)
             .join("")}`;
     } else if (newKeywords) {
-        currentKeywordsEl.innerHTML = `<span title="Click to edit keywords">Keywords: </span><button>${newKeywords}</button>`;
+        currentKeywordsEl.innerHTML = `<span title="Click to edit keywords">Keywords: </span><button class="all-entries__note-keyword">${newKeywords}</button>`;
     } else {
         currentKeywordsEl.innerHTML = `<span title="Click to edit keywords">Keywords: </span>`;
     }
+
+    const dateUpdated = Logic.changeModified(clickedElId); // updating noteobj's modified date
+    const elUpdated = document.querySelector(`.all-entries__note[data-id="${clickedElId}"]`);
+    Visual.updateNoteDate(dateUpdated, elUpdated); // updating in UI
+}
+
+// ================================================================================================
+
+function filterByKeywords(clickedKeyword) {
+    const notesToHide = Logic.getStateNotes().filter((noteObj) => !noteObj.keywords.includes(clickedKeyword)); // those the 'keywords' of which have no 'clickedKeyword'
+    [...document.querySelectorAll(`.all-entries__note`)].forEach((x) => x.classList.remove("hidden"));
+    [...document.querySelectorAll(`.all-entries__miniature`)].forEach((x) => x.classList.remove("hidden"));
+    notesToHide.forEach((note) => {
+        document.querySelector(`.all-entries__note[data-id="${note.id}"]`).classList.add("hidden");
+        document.querySelector(`.all-entries__miniature[data-id="${note.id}"]`).classList.add("hidden");
+    });
+    Visual.searchInput.value = `keyword:${clickedKeyword}`;
 }
 
 // ================================================================================================
